@@ -43,10 +43,12 @@ func spawn_catch():
 
 func get_catch(input):
 	for catch in catches:
-		catch.active = false
 		if catch.input == input:
 			if !catch.active:
 				catch.active = true
 				catch.just_pressed = true
 				catch.time = 0
+		else:
+			catch.active = false
+			catch.just_pressed = false
 			
