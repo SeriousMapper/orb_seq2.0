@@ -14,6 +14,7 @@ var speed
 var bpm_ratio = 0.0
 var hit = false
 onready var tween = $Tween
+
 func _ready():
 	dist = position.distance_to(desired_position)
 	spawn_position = position

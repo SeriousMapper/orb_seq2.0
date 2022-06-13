@@ -1,7 +1,7 @@
 extends Node2D
 const note = preload("res://entities/note.tscn")
 var beats_shown_in_advance = 4.0
-export var latency_mod = 800.0
+export var latency_mod = 0.12
 var notes = []
 var note_index = 0
 var look_ahead = 0.5
@@ -13,6 +13,7 @@ var current_beat = 1.0
 var secs_per_beat = 0
 var spawn = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
 var file_path = "res://tracks/track2.json"
+signal quarter_note
 
 
 var time_delay
@@ -21,12 +22,12 @@ func _ready():
 	var track_json = load_json()
 	notes = track_json.tracks[1].notes
 	bpm = track_json.header.bpm
-	print(bpm)
+	#print(bpm)
 	secs_per_beat = 60.0/bpm
-	time_begin = OS.get_ticks_usec()
+	#time_begin = OS.get_ticks_usec()
 	time_delay = AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency()
-	print(secs_per_beat/beats_shown_in_advance)
-	print(bpm, " ", secs_per_beat)
+	#print(secs_per_beat/beats_shown_in_advance)
+	#print(bpm, " ", secs_per_beat)
 	$Player.play()
 func _process(delta):
 #	time = 0 
@@ -35,6 +36,7 @@ func _process(delta):
 	time = $Player.get_playback_position() + AudioServer.get_time_since_last_mix()
 	# Compensate for output latency.
 	time -= AudioServer.get_output_latency()
+	time -= latency_mod
 	
 	current_beat = time/secs_per_beat
 	
@@ -45,7 +47,6 @@ func _process(delta):
 		var midi_key = int(notes[note_index].midi)
 		var midi_index = midi.find(midi_key)
 		
-		
 		var new_note = note.instance()
 		new_note.audio_controller = self
 		new_note.beat = note_time
@@ -53,6 +54,18 @@ func _process(delta):
 		new_note.beats_advance = beats_shown_in_advance
 		new_note.gravity = spawn[midi_index]
 		new_note.position = spawn[midi_index] * 400
+		# -------------------------------------
+		var mod_time = int(stepify(note_time, 0.25) * 100)
+		
+		if (mod_time % 100 == 0):
+			new_note.modulate = Globals.green
+			emit_signal("quarter_note")
+		elif (mod_time % 50 == 0):
+			new_note.modulate = Globals.blue
+		elif (mod_time % 25 == 0):
+			new_note.modulate = Globals.yellow 
+		
+		#--------------------------------------
 		add_child(new_note)
 		note_index += 1
 
