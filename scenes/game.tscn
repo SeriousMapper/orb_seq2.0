@@ -3,12 +3,12 @@
 [ext_resource path="res://entities/orbit/orbit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
 [ext_resource path="res://entities/track_controller/track.gd" type="Script" id=3]
-[ext_resource path="res://tracks/test_track.mp3" type="AudioStream" id=4]
+[ext_resource path="res://tracks/track1.mp3" type="AudioStream" id=4]
 [ext_resource path="res://assets/shaders/pixel.gdshader" type="Shader" id=5]
 
 [sub_resource type="ShaderMaterial" id=3]
 shader = ExtResource( 5 )
-shader_param/pixel_size = 6
+shader_param/pixel_size = 4
 
 [sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
@@ -88,7 +88,7 @@ modulate = Color( 0.00392157, 0.996078, 0.996078, 0.615686 )
 
 [node name="track" type="Node2D" parent="controller"]
 script = ExtResource( 3 )
-latency_mod = -0.12
+latency_mod = 0.0
 
 [node name="Player" type="AudioStreamPlayer" parent="controller/track"]
 stream = ExtResource( 4 )

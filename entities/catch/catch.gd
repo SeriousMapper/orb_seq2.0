@@ -7,6 +7,7 @@ var just_pressed = false
 var mod = Color(1,1,1,0.5)
 var just_pressed_timer = 0.1
 var time = 0
+var scale_mod = Vector2(1,1)
 func _ready():
 	pass 
 
@@ -39,6 +40,7 @@ func _process_note():
 		state = states.NONE
 		time = 0
 		print(text)
+		
 
 
 
@@ -52,6 +54,7 @@ func _on_Perfect_area_entered(area):
 func _on_Good_area_entered(area):
 	if area.get_parent() is Note:
 		state = states.GOOD
+
 		_process_note()
 
 

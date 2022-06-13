@@ -12,7 +12,7 @@ var bpm = 1.0
 var current_beat = 1.0
 var secs_per_beat = 0
 var spawn = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
-var file_path = "res://tracks/test_track.json"
+var file_path = "res://tracks/track1.json"
 
 
 var time_delay
@@ -56,6 +56,13 @@ func _process(delta):
 		note_index += 1
 	if note_index >= notes.size():
 		set_process(false)
+		yield($Player,"finished")
+		print("finished")
+		note_index = 0
+		time_begin = OS.get_ticks_usec()
+		time_delay = AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency()
+		$Player.play()
+		set_process(true)
 func get_beat():
 	pass
 
