@@ -3,6 +3,7 @@ class_name Note
 var gravity = Vector2.ZERO
 var spawn_position = Vector2.ZERO
 var desired_position = Vector2.ZERO
+var dummy_position = Vector2
 var dist_to_target
 var time = 1.0
 var last_pos_diff = Vector2.ZERO

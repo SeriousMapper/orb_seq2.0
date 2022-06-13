@@ -5,7 +5,7 @@ var input = Vector2.ZERO
 var active = false
 var just_pressed = false
 var mod = Color(1,1,1,0.5)
-var just_pressed_timer = 0.02
+var just_pressed_timer = 0.10
 var time = 0
 var scale_mod = Vector2(0.5,0.5)
 var circ2_mod = 0
@@ -18,7 +18,10 @@ func _ready():
 	pass 
 
 func _process(delta):
+<<<<<<< Updated upstream
 	#print(delta)
+=======
+>>>>>>> Stashed changes
 
 	$Okay.monitoring = colliding
 
@@ -42,6 +45,7 @@ func _process(delta):
 	circle.modulate = circle.modulate.linear_interpolate(mod, delta * 5)
 	circle.scale = circle.scale.linear_interpolate(scale_mod, delta * 5)
 
+		
 func _process_note(note):
 	if just_pressed && note.hit == false:
 		var text = ""

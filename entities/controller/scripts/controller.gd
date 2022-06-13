@@ -43,12 +43,22 @@ func spawn_catch():
 
 func get_catch(input):
 	for catch in catches:
+<<<<<<< Updated upstream
+=======
+		
+		
+>>>>>>> Stashed changes
 		if catch.input == input:
 			if !catch.active:
 				catch.active = true
 				catch.just_pressed = true
 				catch.time = 0
 		else:
+<<<<<<< Updated upstream
 			catch.active = false
 			catch.just_pressed = false
+=======
+			catch.just_pressed = false
+			catch.active = false
+>>>>>>> Stashed changes
 			
