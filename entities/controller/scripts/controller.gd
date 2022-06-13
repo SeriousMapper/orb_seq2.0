@@ -11,8 +11,9 @@ func _ready():
 func _process(delta):
 
 	var input = get_input()
+	
+	player.position = player.position.linear_interpolate(input * 32, delta * 15)
 	get_catch(input)
-	player.position = player.position.linear_interpolate(input * 32, delta * 30)
 	
 
 func get_input():
@@ -22,7 +23,7 @@ func get_input():
 		
 	if abs(input_vert) && abs(input_horz) > 0:
 		input_horz = 0
-	
+		
 
 	
 			
@@ -42,9 +43,10 @@ func spawn_catch():
 
 func get_catch(input):
 	for catch in catches:
+		catch.active = false
 		if catch.input == input:
 			if !catch.active:
 				catch.active = true
 				catch.just_pressed = true
-		else:
-			catch.active = false
+				catch.time = 0
+			
