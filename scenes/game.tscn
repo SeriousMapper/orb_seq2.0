@@ -5,7 +5,6 @@
 [ext_resource path="res://entities/track_controller/track.gd" type="Script" id=3]
 [ext_resource path="res://tracks/test_track.mp3" type="AudioStream" id=4]
 [ext_resource path="res://assets/shaders/pixel.gdshader" type="Shader" id=5]
-[ext_resource path="res://entities/blackhole/blackhole.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ShaderMaterial" id=3]
 shader = ExtResource( 5 )
@@ -47,12 +46,18 @@ radial_accel = 3.92
 scale = 3.0
 color_ramp = SubResource( 7 )
 
+[sub_resource type="Environment" id=9]
+background_mode = 4
+glow_enabled = true
+glow_intensity = 4.28
+glow_bloom = 0.16
+glow_bicubic_upscale = true
+
 [node name="game" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="global_shader" type="ColorRect" parent="CanvasLayer"]
-visible = false
 material = SubResource( 3 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -83,8 +88,10 @@ modulate = Color( 0.00392157, 0.996078, 0.996078, 0.615686 )
 
 [node name="track" type="Node2D" parent="controller"]
 script = ExtResource( 3 )
+latency_mod = -0.12
 
 [node name="Player" type="AudioStreamPlayer" parent="controller/track"]
 stream = ExtResource( 4 )
 
-[node name="blackhole" parent="controller" instance=ExtResource( 6 )]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 9 )

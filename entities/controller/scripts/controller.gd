@@ -12,7 +12,7 @@ func _process(delta):
 
 	var input = get_input()
 	get_catch(input)
-	player.position = player.position.linear_interpolate(input * 32, delta * 20)
+	player.position = player.position.linear_interpolate(input * 32, delta * 30)
 	
 
 func get_input():
