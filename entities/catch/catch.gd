@@ -18,10 +18,6 @@ func _ready():
 	pass 
 
 func _process(delta):
-<<<<<<< Updated upstream
-	#print(delta)
-=======
->>>>>>> Stashed changes
 
 	$Okay.monitoring = colliding
 
