@@ -55,5 +55,4 @@ func get_catch(input):
 				catch.time = 0
 		else:
 			catch.active = false
-			catch.just_pressed = false
 			

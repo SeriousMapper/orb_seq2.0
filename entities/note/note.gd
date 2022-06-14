@@ -5,6 +5,7 @@ var spawn_position = Vector2.ZERO
 var desired_position = Vector2.ZERO
 var dummy_position = Vector2.ZERO
 var dist_to_target
+var beat_at_spawn = 0.0
 var time = 1.0
 var last_pos_diff = Vector2.ZERO
 var dist = 0
@@ -14,9 +15,12 @@ var beats_advance = 0.0
 var speed
 var bpm_ratio = 0.0
 var hit = false
+var duration = 0.0
+
 onready var tween = $Tween
 
 func _ready():
+	add_to_group("notes")
 	dist = position.distance_to(desired_position)
 	spawn_position = position
 	desired_position = gravity * 30
@@ -40,6 +44,7 @@ func _process(delta):
 		modulate.a = lerp(modulate.a, 0.0, delta * 10)
 		if modulate.a < 0.05 or position.distance_to(Vector2.ZERO) < 4:
 			Player.remove_combo()
+			Player.note_accuracy.append(0.0)
 			queue_free()
 	if hit:
 		queue_free()

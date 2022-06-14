@@ -20,6 +20,11 @@ _global_script_classes=[ {
 "path": "res://addons/midi/Bank.gd"
 }, {
 "base": "Node",
+"class": "MatrixText",
+"language": "GDScript",
+"path": "res://entities/cool_text/MatrixText.gd"
+}, {
+"base": "Node",
 "class": "MidiPlayer",
 "language": "GDScript",
 "path": "res://addons/midi/MidiPlayer.gd"
@@ -42,6 +47,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "AudioStreamPlayerADSR": "",
 "Bank": "",
+"MatrixText": "",
 "MidiPlayer": "",
 "Note": "",
 "SMF": "",

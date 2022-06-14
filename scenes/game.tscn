@@ -1,14 +1,8 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://tracks/track3.mp3" type="AudioStream" id=1]
+[ext_resource path="res://tracks/Heaven.mp3" type="AudioStream" id=1]
 [ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
 [ext_resource path="res://entities/track_controller/track.gd" type="Script" id=3]
-[ext_resource path="res://entities/spectrum2/spectrum2.gd" type="Script" id=4]
-[ext_resource path="res://assets/shaders/pixel.gdshader" type="Shader" id=5]
-
-[sub_resource type="ShaderMaterial" id=3]
-shader = ExtResource( 5 )
-shader_param/pixel_size = 2
 
 [sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
@@ -87,13 +81,6 @@ shader_param/st_mod = 0.15
 
 [node name="game" type="Node2D"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="global_shader" type="ColorRect" parent="CanvasLayer"]
-material = SubResource( 3 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-
 [node name="controller" type="Node2D" parent="."]
 process_priority = 2
 position = Vector2( 180, 180 )
@@ -134,6 +121,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
 
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 112, 271 )
-script = ExtResource( 4 )
+[node name="Intro" type="Node2D" parent="."]
