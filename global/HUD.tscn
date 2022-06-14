@@ -14,7 +14,6 @@ anchor_bottom = 1.0
 theme = ExtResource( 2 )
 
 [node name="song_display" type="Control" parent="."]
-modulate = Color( 1, 1, 1, 0.670588 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 2 )
@@ -30,6 +29,7 @@ margin_bottom = 11.0
 text = "_score: 00000000"
 
 [node name="MarginContainer2" type="MarginContainer" parent="song_display"]
+modulate = Color( 1, 1, 1, 0.45098 )
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -40.0
@@ -64,6 +64,7 @@ size_flags_vertical = 0
 text = "_MAX_COMBO: 000"
 
 [node name="MarginContainer3" type="MarginContainer" parent="song_display"]
+modulate = Color( 1, 1, 1, 0.45098 )
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
