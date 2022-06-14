@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://global/HUD.gd" type="Script" id=1]
+[ext_resource path="res://theme.tres" type="Theme" id=2]
+[ext_resource path="res://global/song_display.gd" type="Script" id=3]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 2
@@ -9,3 +11,93 @@ script = ExtResource( 1 )
 [node name="hud_display" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 2 )
+
+[node name="song_display" type="Control" parent="."]
+modulate = Color( 1, 1, 1, 0.670588 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="song_display"]
+margin_right = 109.0
+margin_bottom = 11.0
+
+[node name="Score" type="Label" parent="song_display/MarginContainer"]
+margin_right = 109.0
+margin_bottom = 11.0
+text = "_score: 00000000"
+
+[node name="MarginContainer2" type="MarginContainer" parent="song_display"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -40.0
+margin_right = 109.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="song_display/MarginContainer2"]
+margin_right = 109.0
+margin_bottom = 41.0
+alignment = 2
+
+[node name="combo" type="Label" parent="song_display/MarginContainer2/VBoxContainer"]
+margin_right = 109.0
+margin_bottom = 11.0
+size_flags_horizontal = 7
+size_flags_vertical = 0
+text = "_combo: 000"
+
+[node name="combo_mult" type="Label" parent="song_display/MarginContainer2/VBoxContainer"]
+margin_top = 15.0
+margin_right = 109.0
+margin_bottom = 26.0
+size_flags_horizontal = 7
+size_flags_vertical = 0
+text = "_mult: 0.0"
+
+[node name="max_combo" type="Label" parent="song_display/MarginContainer2/VBoxContainer"]
+margin_top = 30.0
+margin_right = 109.0
+margin_bottom = 41.0
+size_flags_horizontal = 7
+size_flags_vertical = 0
+text = "_MAX_COMBO: 000"
+
+[node name="MarginContainer3" type="MarginContainer" parent="song_display"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -109.0
+margin_top = -41.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="song_display/MarginContainer3"]
+margin_right = 109.0
+margin_bottom = 41.0
+alignment = 2
+
+[node name="Perfect" type="Label" parent="song_display/MarginContainer3/VBoxContainer"]
+margin_right = 109.0
+margin_bottom = 11.0
+size_flags_horizontal = 7
+size_flags_vertical = 0
+text = "_perfect: 000"
+align = 2
+
+[node name="Good" type="Label" parent="song_display/MarginContainer3/VBoxContainer"]
+margin_top = 15.0
+margin_right = 109.0
+margin_bottom = 26.0
+size_flags_horizontal = 7
+size_flags_vertical = 0
+text = "_GOOD: 000"
+align = 2
+
+[node name="Okay" type="Label" parent="song_display/MarginContainer3/VBoxContainer"]
+margin_top = 30.0
+margin_right = 109.0
+margin_bottom = 41.0
+size_flags_horizontal = 7
+size_flags_vertical = 0
+text = "_OKAY: 000"
+align = 2

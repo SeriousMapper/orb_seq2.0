@@ -5,15 +5,17 @@ var catch_state = catch.NONE
 var input_pos = [Vector2(1,0), Vector2(-1, 0), Vector2(0,1), Vector2(0,-1)]
 
 var catches = []
+var time = 0
 onready var player = $player
 func _ready():
 	spawn_catch()
 func _process(delta):
-
+	time += delta
 	var input = get_input()
 	
 	player.position = player.position.linear_interpolate(input * 32, delta * 15)
 	get_catch(input)
+	rotation = sin(time) * 0.01
 	
 
 func get_input():

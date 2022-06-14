@@ -49,11 +49,15 @@ func _process_note(note):
 		match state:
 			states.PERFECT:
 				text = "Perfect!"
+				Player.perfect += 1
 			states.OKAY:
 				text = "Okay"
+				Player.okay += 1
 			states.GOOD:
 				text = "Good!"
+				Player.good += 1
 		if text != "":
+			Player.add_combo()
 			HUD.spawn_floaty_text(global_position, text)
 			circle.modulate = Color(1.2,1.2,1.2,1.0)
 		state = states.NONE

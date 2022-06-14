@@ -12,7 +12,7 @@ var bpm = 1.0
 var current_beat = 1.0
 var secs_per_beat = 0
 var spawn = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
-var file_path = "res://tracks/track2.json"
+var file_path = "res://tracks/track3.json"
 signal quarter_note
 
 

@@ -39,8 +39,13 @@ func _process(delta):
 	if position.distance_to(Vector2.ZERO) < 32:
 		modulate.a = lerp(modulate.a, 0.0, delta * 10)
 		if modulate.a < 0.05 or position.distance_to(Vector2.ZERO) < 4:
+			Player.remove_combo()
 			queue_free()
 	if hit:
 		queue_free()
 
-	
+func _quadratic_bezier(p0: Vector2, p1: Vector2, p2: Vector2, t: float):
+	var q0 = p0.linear_interpolate(p1, t)
+	var q1 = p1.linear_interpolate(p2, t)
+	var r = q0.linear_interpolate(q1, t)
+	return r
