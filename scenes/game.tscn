@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://tracks/track2.mp3" type="AudioStream" id=1]
+[ext_resource path="res://tracks/track3.mp3" type="AudioStream" id=1]
 [ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
 [ext_resource path="res://entities/track_controller/track.gd" type="Script" id=3]
 [ext_resource path="res://entities/spectrum/spectrum.tscn" type="PackedScene" id=4]

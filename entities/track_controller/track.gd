@@ -12,7 +12,7 @@ var bpm = 1.0
 var current_beat = 1.0
 var secs_per_beat = 0
 var spawn = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
-var file_path = "res://tracks/track2.json"
+var file_path = "res://tracks/track3.json"
 signal quarter_note
 var spec_index = 0
 var spec_time = 0
@@ -73,6 +73,8 @@ func _process(delta):
 	#for triggering spectrum analyzer on beat instead of ahead of beat
 	if spec_index < notes.size():
 		spec_time = notes[spec_index].time / secs_per_beat
+	else:
+		spec_time = -1
 	if (spec_time < current_beat && spec_time > 0):
 		var mod_time = int(stepify(spec_time, 0.25) * 100)
 		if (mod_time % 100 == 0):

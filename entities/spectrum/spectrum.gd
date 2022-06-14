@@ -34,10 +34,10 @@ func _on_track_quarter_note():
 
 func expand_circle(speed):
 	if (direction):
-		tween.interpolate_property($Sprite, "scale", Vector2(0.1, 0.1), Vector2(0.15, 0.15), speed, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+		tween.interpolate_property($Sprite, "scale", Vector2(0.15, 0.15), Vector2(0.2, 0.2), speed, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 		tween.start()
 		direction = !direction
 	else:
-		tween.interpolate_property($Sprite, "scale", Vector2(0.15, 0.15), Vector2(0.1, 0.1), speed, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+		tween.interpolate_property($Sprite, "scale", Vector2(0.2, 0.2), Vector2(0.15, 0.15), speed, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 		tween.start()
 		direction = !direction
