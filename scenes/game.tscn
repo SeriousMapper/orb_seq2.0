@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://tracks/track2.mp3" type="AudioStream" id=1]
 [ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
 [ext_resource path="res://entities/track_controller/track.gd" type="Script" id=3]
+[ext_resource path="res://entities/spectrum/spectrum.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/shaders/pixel.gdshader" type="Shader" id=5]
 
 [sub_resource type="ShaderMaterial" id=3]
@@ -98,6 +99,12 @@ process_priority = 2
 position = Vector2( 180, 180 )
 script = ExtResource( 2 )
 
+[node name="spectrum" parent="controller" instance=ExtResource( 4 )]
+
+[node name="spectrum2" parent="controller" instance=ExtResource( 4 )]
+
+[node name="spectrum3" parent="controller" instance=ExtResource( 4 )]
+
 [node name="hit_boxes" type="Node2D" parent="controller"]
 
 [node name="player" type="MeshInstance2D" parent="controller"]
@@ -132,3 +139,7 @@ material = SubResource( 11 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
+
+[connection signal="quarter_note" from="controller/track" to="controller/spectrum" method="_on_track_quarter_note"]
+[connection signal="quarter_note" from="controller/track" to="controller/spectrum2" method="_on_track_quarter_note"]
+[connection signal="quarter_note" from="controller/track" to="controller/spectrum3" method="_on_track_quarter_note"]
