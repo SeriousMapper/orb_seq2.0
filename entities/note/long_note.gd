@@ -33,7 +33,7 @@ func _ready() -> void:
 	add_to_group("long_notes")
 	add_to_group("notes")
 	spawn_position = position
-	desired_position = gravity * 20
+	desired_position = gravity * 16
 	last_position = position
 	beat_duration = beat + duration
 	tail_length = (duration) * speed_per_unit

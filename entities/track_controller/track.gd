@@ -3,7 +3,7 @@ const note = preload("res://entities/note.tscn")
 const long_note = preload("res://entities/note/long_note.tscn")
 const dummy_note = preload("res://entities/note/time_measure.tscn")
 var beats_shown_in_advance = 4.0
-export var latency_mod = 0.12
+export var latency_mod = 0.02
 var notes = []
 var note_index = 0
 var look_ahead = 0.5
@@ -21,6 +21,8 @@ var unit_per_measure = 0.0
 var node_ref = [null,null]
 var reference = false
 signal quarter_note
+var spec_index = 0
+var spec_time = 0
 
 
 var time_delay
@@ -38,6 +40,7 @@ func _ready():
 	secs_per_beat = 60.0/bpm
 	#time_begin = OS.get_ticks_usec()
 	time_delay = AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency()
+	print("Time delay   " + str(time_delay))
 	#print(secs_per_beat/beats_shown_in_advance)
 	#print(bpm, " ", secs_per_beat)
 	$Player.play()
@@ -62,10 +65,9 @@ func _process(delta):
 	# Compensate for output latency.
 	time -= AudioServer.get_output_latency()
 	
-	
-	current_beat = time/secs_per_beat
 	time -= latency_mod
-
+	current_beat = time/secs_per_beat
+	
 	if current_beat > next_beat:
 		next_beat = int(current_beat) + 4
 		_spawn_dummy()
@@ -110,6 +112,16 @@ func _process(delta):
 		#--------------------------------------
 		add_child(new_note)
 		note_index += 1
+		
+	if spec_index < notes.size():
+		spec_time = notes[spec_index].time / secs_per_beat
+	else:
+		spec_time = -1
+	if (spec_time < current_beat && spec_time > 0):
+		var mod_time = int(stepify(spec_time, 0.25) * 100)
+		if (mod_time % 100 == 0):
+			emit_signal("quarter_note")
+		spec_index += 1
 
 func get_beat():
 	pass
