@@ -26,5 +26,3 @@ func _process(delta: float) -> void:
 	if time > accuracy_tick:
 		accuracy.text = "_ACCURACY: " + "%2.2f" % Player._calculate_accuracy()
 		time = 0.0
-		
-		pass

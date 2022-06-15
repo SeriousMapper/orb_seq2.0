@@ -8,8 +8,10 @@ var good = 0
 var okay = 0
 var score = 0
 var note_accuracy = []
+var note_time_accuracy = []
+
 func _ready() -> void:
-	pass 
+	pass
 
 func add_combo():
 	combo += 1
@@ -23,8 +25,8 @@ func remove_combo():
 func _calculate_accuracy():
 	var sum = 0
 	var avg = 0.0
+	
 	if note_accuracy.size() > 0:
-		
 		for i in note_accuracy:
 			sum += i
 		avg = sum/note_accuracy.size()
