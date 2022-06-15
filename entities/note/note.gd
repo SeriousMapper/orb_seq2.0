@@ -37,7 +37,7 @@ func _ready():
 #	queue_free()
 func calculate_accuracy() -> float:
 	var acc = 0.0
-	acc = abs(beat-audio_controller.current_beat)
+	acc = (beat-audio_controller.current_beat) * audio_controller.secs_per_beat
 	return acc
 func _process(delta):
 	var t = (beat-audio_controller.current_beat)/beats_advance

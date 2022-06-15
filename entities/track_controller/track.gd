@@ -23,6 +23,7 @@ var unit_per_measure = 0.0
 var node_ref = [null,null]
 var reference = false
 signal quarter_note
+signal song_done
 var spec_index = 0
 var spec_time = 0
 
@@ -82,6 +83,9 @@ func _process(delta):
 	var note_time = 0
 	if note_index < notes.size():
 		note_time = notes[note_index].time/secs_per_beat
+	else:
+		emit_signal("song_done")
+		print("SONG IS DONE")
 	if note_time < current_beat + beats_shown_in_advance && note_time > 0:
 		var midi_key = int(notes[note_index].midi)
 		var midi_index = midi.find(midi_key)
@@ -89,9 +93,7 @@ func _process(delta):
 		if notes[note_index].duration > 0.7:
 			new_note = long_note.instance()
 			new_note.speed_per_unit = unit_per_measure
-			
 		else:
-			
 			new_note = note.instance()
 		new_note.audio_controller = self
 		new_note.beat = note_time
