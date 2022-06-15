@@ -2,7 +2,7 @@ extends Node2D
 const note = preload("res://entities/note.tscn")
 const long_note = preload("res://entities/note/long_note.tscn")
 const dummy_note = preload("res://entities/note/time_measure.tscn")
-var beats_shown_in_advance = 4.0
+var beats_shown_in_advance = 6.0
 export var latency_mod = 0.12
 var notes = []
 var note_index = 0
@@ -62,9 +62,9 @@ func _process(delta):
 	# Compensate for output latency.
 	time -= AudioServer.get_output_latency()
 	
-	
-	current_beat = time/secs_per_beat
 	time -= latency_mod
+	current_beat = time/secs_per_beat
+	
 
 	if current_beat > next_beat:
 		next_beat = int(current_beat) + 4
