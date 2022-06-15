@@ -76,6 +76,7 @@ shader_param/st_mod = 0.15
 [sub_resource type="Shader" id=12]
 code = "shader_type canvas_item;
 uniform float speed = 0.6;
+
 void fragment()
 {
 	vec2 iResolution = 4.0 / SCREEN_PIXEL_SIZE;
@@ -107,22 +108,22 @@ position = Vector2( 180, 180 )
 script = ExtResource( 2 )
 
 [node name="spectrum" parent="controller" instance=ExtResource( 6 )]
-modulate = Color( 1, 1, 1, 0.0235294 )
+modulate = Color( 1, 1, 1, 0.231373 )
 
 [node name="spectrum2" parent="controller" instance=ExtResource( 6 )]
-modulate = Color( 1, 1, 1, 0.0235294 )
+modulate = Color( 1, 1, 1, 0.231373 )
 
 [node name="spectrum3" parent="controller" instance=ExtResource( 6 )]
-modulate = Color( 1, 1, 1, 0.0235294 )
+modulate = Color( 1, 1, 1, 0.231373 )
 
 [node name="spectrum4" parent="controller" instance=ExtResource( 6 )]
-modulate = Color( 1, 1, 1, 0.0235294 )
+modulate = Color( 1, 1, 1, 0.231373 )
 
 [node name="spectrum5" parent="controller" instance=ExtResource( 6 )]
-modulate = Color( 1, 1, 1, 0.0235294 )
+modulate = Color( 1, 1, 1, 0.231373 )
 
 [node name="spectrum6" parent="controller" instance=ExtResource( 6 )]
-modulate = Color( 1, 1, 1, 0.0235294 )
+modulate = Color( 1, 1, 1, 0.231373 )
 
 [node name="hit_boxes" type="Node2D" parent="controller"]
 
@@ -142,7 +143,9 @@ modulate = Color( 0.00392157, 0.996078, 0.996078, 0.615686 )
 
 [node name="track" type="Node2D" parent="controller"]
 script = ExtResource( 3 )
+
 latency_mod = 0.08
+
 
 [node name="Player" type="AudioStreamPlayer" parent="controller/track"]
 stream = ExtResource( 1 )
