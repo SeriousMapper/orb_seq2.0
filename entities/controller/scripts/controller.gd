@@ -26,9 +26,6 @@ func get_input():
 	if abs(input_vert) && abs(input_horz) > 0:
 		input_horz = 0
 		
-
-	
-			
 	return  Vector2(input_horz, input_vert)
 
 func spawn_catch():
@@ -45,9 +42,6 @@ func spawn_catch():
 
 func get_catch(input):
 	for catch in catches:
-
-		
-		
 		if catch.input == input:
 			if !catch.active:
 				catch.active = true
@@ -55,4 +49,3 @@ func get_catch(input):
 				catch.time = 0
 		else:
 			catch.active = false
-			

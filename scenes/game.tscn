@@ -1,10 +1,14 @@
+
 [gd_scene load_steps=16 format=2]
+
 
 [ext_resource path="res://tracks/Heaven.mp3" type="AudioStream" id=1]
 [ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
 [ext_resource path="res://entities/track_controller/track.gd" type="Script" id=3]
 [ext_resource path="res://assets/environments/game.tres" type="Environment" id=4]
+
 [ext_resource path="res://assets/png/constellations-2609647__340.jpg" type="Texture" id=5]
+
 
 [sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
@@ -105,6 +109,12 @@ process_priority = 2
 position = Vector2( 180, 180 )
 script = ExtResource( 2 )
 
+[node name="spectrum" parent="controller" instance=ExtResource( 5 )]
+
+[node name="spectrum2" parent="controller" instance=ExtResource( 5 )]
+
+[node name="spectrum3" parent="controller" instance=ExtResource( 5 )]
+
 [node name="hit_boxes" type="Node2D" parent="controller"]
 
 [node name="player" type="MeshInstance2D" parent="controller"]
@@ -123,7 +133,9 @@ modulate = Color( 0.00392157, 0.996078, 0.996078, 0.615686 )
 
 [node name="track" type="Node2D" parent="controller"]
 script = ExtResource( 3 )
+
 latency_mod = 0.02
+
 
 [node name="Player" type="AudioStreamPlayer" parent="controller/track"]
 stream = ExtResource( 1 )
