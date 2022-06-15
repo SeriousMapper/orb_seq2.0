@@ -30,23 +30,8 @@ func _init(string:String, label:Label):
 
 func _process(delta: float) -> void:
 	time += delta
-	decision_time += delta
 	count = 0
 	var string = ""
-	if time > update_tick:
-		time = 0
-		var true_check = true
-		for c in text:
-			count += 1
-			if !decoded[count]:
-				string += decoders[randi()%decoders.size()]
-				true_check = false
-			else:
-				string += c
-		if true_check:
-			set_process(false)
-			queue_free()
-		lbl.text = string
 	if decision_time > decision_update:
 		decision_time = 0.0
 		
@@ -56,6 +41,21 @@ func _process(delta: float) -> void:
 			if decoded[rand_index] == false:
 				decision_made = true
 				decoded[rand_index] = true
+	if time > update_tick:
+		time = 0
+		var true_check = true
+		decision_time += 1
+		for c in text:
+			count += 1
+			if !decoded[count]:
+				string += decoders[randi()%decoders.size()]
+				true_check = false
+			else:
+				string += c
+		if true_check:
+			set_process(false)
+		lbl.text = string
+
 		
 		
 	

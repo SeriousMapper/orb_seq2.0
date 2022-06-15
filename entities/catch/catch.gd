@@ -48,6 +48,7 @@ func _process_note(note):
 	if just_pressed && note.hit == false:
 		var text = ""
 		note.hit = true
+		print(note.calculate_accuracy())
 		var accuracy = 1- abs(note.calculate_accuracy())
 		print(accuracy)
 		if note.is_in_group("long_notes") and !note.hit_state:
