@@ -25,12 +25,17 @@ var position_speed = Vector2.ZERO
 var go_gray = false
 var tick = 0.1
 var time = 0
+var accuracy = 0.0
+var hit_state = false
+var beat_duration = 0.0
+var beat_mod = 0.0
 func _ready() -> void:
 	add_to_group("long_notes")
 	add_to_group("notes")
 	spawn_position = position
-	desired_position = gravity * 30
+	desired_position = gravity * 20
 	last_position = position
+	beat_duration = beat + duration
 	tail_length = (duration) * speed_per_unit
 	$Line2D.points[1] = tail_length * gravity
 	$end.position = tail_length * gravity
@@ -40,10 +45,14 @@ func _ready() -> void:
 func key_released():
 	hit = false
 	go_gray = true
-
+	beat_mod = duration
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
-#	pass
+func calculate_accuracy() -> float:
+	var acc = 0.0
+	
+	acc = abs((beat+beat_mod)-audio_controller.current_beat)
+	return acc
 func _process(delta):
 	end_position = position + $end.position
 	var t = (beat-audio_controller.current_beat)/beats_advance
@@ -62,6 +71,9 @@ func _process(delta):
 			Player.remove_combo()
 			queue_free()
 	if hit:
+		if !hit_state:
+			$area.queue_free()
+			hit_state = true
 		time += delta
 		if time > tick:
 			Player.combo += 1
@@ -87,5 +99,4 @@ func _quadratic_bezier(p0: Vector2, p1: Vector2, p2: Vector2, t: float):
 	return r
 
 
-func _on_end_area_area_entered(area: Area2D) -> void:
-	"ARea Entered!"
+

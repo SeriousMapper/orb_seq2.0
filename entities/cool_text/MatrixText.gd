@@ -9,11 +9,11 @@ var text = ""
 var chars_decoded = 0
 var decoded = []
 var decision_time = 0.0
-var decision_update = 0.1
+var decision_update = 0.04
 var time = 1.0
 var chars = 0.0
 var count = 0
-var update_tick = 0.05
+var update_tick = 0.02
 var lbl = null
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -45,6 +45,7 @@ func _process(delta: float) -> void:
 				string += c
 		if true_check:
 			set_process(false)
+			queue_free()
 		lbl.text = string
 	if decision_time > decision_update:
 		decision_time = 0.0

@@ -1,16 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/svg/circle.svg" type="Texture" id=1]
 [ext_resource path="res://entities/catch/catch.gd" type="Script" id=2]
 
-[sub_resource type="CircleShape2D" id=8]
-radius = 17.0
-
-[sub_resource type="CircleShape2D" id=9]
-radius = 14.0357
-
-[sub_resource type="CircleShape2D" id=10]
-radius = 9.0
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 16, 15.5 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 3.5, 3.5 )
@@ -39,29 +33,14 @@ color_ramp = SubResource( 6 )
 process_priority = 2
 script = ExtResource( 2 )
 
-[node name="Okay" type="Area2D" parent="."]
-collision_layer = 3
-collision_mask = 3
-priority = 1.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Okay"]
-shape = SubResource( 8 )
-
 [node name="Good" type="Area2D" parent="."]
+process_priority = 1
 collision_layer = 3
 collision_mask = 3
-priority = 2.0
+priority = 4.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Good"]
-shape = SubResource( 9 )
-
-[node name="Perfect" type="Area2D" parent="."]
-collision_layer = 3
-collision_mask = 3
-priority = 3.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Perfect"]
-shape = SubResource( 10 )
+shape = SubResource( 8 )
 
 [node name="Circle2" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0 )
@@ -88,9 +67,6 @@ amount = 50
 lifetime = 0.7
 process_material = SubResource( 7 )
 
-[connection signal="area_entered" from="Okay" to="." method="_on_Okay_area_entered"]
-[connection signal="area_exited" from="Okay" to="." method="_on_Okay_area_exited"]
 [connection signal="area_entered" from="Good" to="." method="_on_Good_area_entered"]
 [connection signal="area_exited" from="Good" to="." method="_on_Good_area_exited"]
-[connection signal="area_entered" from="Perfect" to="." method="_on_Perfect_area_entered"]
 [connection signal="area_entered" from="LongCatch" to="." method="_on_LongCatch_area_entered"]

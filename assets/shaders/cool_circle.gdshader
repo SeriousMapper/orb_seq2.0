@@ -13,9 +13,5 @@ void fragment()
 	float d = distance(UV, vec2(0.5));
 	float circle = smoothstep(d - edge_softness, d, radius - edge_softness);
 	float circ2 = smoothstep(d - edge_softness, d, radius * 0.9 - edge_softness);
-	COLOR = vec4(color.rgb, circle - circ2);
-}
-void vertex() {
-    VERTEX.y += sin(UV.x * TIME) * 10.0;
-	VERTEX.x += sin(UV.x * TIME) * 10.0;
+	COLOR = vec4(color.rgb, circle);
 }

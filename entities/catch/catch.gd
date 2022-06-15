@@ -20,11 +20,6 @@ func _ready():
 	pass 
 
 func _process(delta):
-
-	$Okay.monitoring = colliding
-
-	$Good.monitoring = colliding
-	$Perfect.monitoring = colliding
 	$Particles2D.emitting = long_active && active
 	if active:
 		mod = Color(0.7,0.7, 1.0, 0.9)
@@ -39,41 +34,38 @@ func _process(delta):
 		scale_mod = Vector2(0.5,0.5)
 		
 	if just_pressed:
-		time += delta
-		colliding = true
-
-		if time > just_pressed_timer:
-			just_pressed = false
-			colliding = false
-			time = 0
-			print("just pressed!")
+		var collision = $Good.get_overlapping_areas()
+		if collision.size() > 0:
+			var note = collision[0].get_parent()
+			if note.is_in_group("notes"):
+				_process_note(note)
+	just_pressed = false
 	circle.modulate = circle.modulate.linear_interpolate(mod, delta * 5)
 	circle.scale = circle.scale.linear_interpolate(scale_mod, delta * 5)
 
 		
 func _process_note(note):
-	print(note.hit, just_pressed)
 	if just_pressed && note.hit == false:
 		var text = ""
 		note.hit = true
-		var accuracy = 0.0
-		if note.is_in_group("long_notes"):
+		var accuracy = 1- abs(note.calculate_accuracy())
+		print(accuracy)
+		if note.is_in_group("long_notes") and !note.hit_state:
 			connect("unactive", note, "key_released")
 			long_active = true
 			print("long note!")
-		match state:
-			states.PERFECT:
-				text = "Perfect!"
-				Player.perfect += 1
-				accuracy = 1.0
-			states.OKAY:
-				text = "Okay"
-				Player.okay += 1
-				accuracy = 0.7
-			states.GOOD:
-				text = "Good!"
-				Player.good += 1
-				accuracy = 0.8
+		if accuracy > 0.9:
+			text = "Perfect!"
+			Player.perfect += 1
+		elif accuracy > 0.7:
+			Player.good += 1
+			text = "Good!"
+		elif accuracy > 0.3:
+			text = "Okay"
+			Player.okay += 1
+
+
+
 		if text != "":
 			Player.add_combo()
 			HUD.spawn_floaty_text(global_position, text)
@@ -86,12 +78,7 @@ func _process_note(note):
 		
 		
 
-func _on_Perfect_area_entered(area):
-	var body = area.get_parent()
-	if body.is_in_group("notes"):
-		
-		state = states.PERFECT
-		_process_note(area.get_parent())
+
 
 
 func _on_Good_area_entered(area):
@@ -102,20 +89,7 @@ func _on_Good_area_entered(area):
 		tween.interpolate_property(circ2, "modulate:a", circ2.modulate.a, 0.1, 0.3,Tween.TRANS_CUBIC)
 		tween.interpolate_property(circ2, "scale", circ2.scale, Vector2(1.2,1.2), 0.3,Tween.TRANS_CUBIC)
 		tween.start()
-		_process_note(area.get_parent())
 
-func _on_Okay_area_entered(area):
-	var body = area.get_parent()
-	if body.is_in_group("notes"):
-		state = states.OKAY
-#		tween.interpolate_property(circ2, "modulate:a", circ2.modulate.a, 0.1, 0.3,Tween.TRANS_CUBIC)
-#		tween.interpolate_property(circ2, "scale", circ2.scale, Vector2(1.2,1.2), 0.3,Tween.TRANS_CUBIC)
-#		tween.start()
-		_process_note(area.get_parent())
-
-
-func _on_Okay_area_exited(area):
-	pass
 
 
 func _on_Good_area_exited(area):

@@ -23,7 +23,7 @@ func _ready():
 	add_to_group("notes")
 	dist = position.distance_to(desired_position)
 	spawn_position = position
-	desired_position = gravity * 30
+	desired_position = gravity * 20
 	
 	dist_to_target = position.distance_to(desired_position)
 	speed = dist_to_target/2
@@ -35,6 +35,10 @@ func _ready():
 #	tween.start()
 #	yield(tween, "tween_completed")
 #	queue_free()
+func calculate_accuracy() -> float:
+	var acc = 0.0
+	acc = abs(beat-audio_controller.current_beat)
+	return acc
 func _process(delta):
 	var t = (beat-audio_controller.current_beat)/beats_advance
 	$Label.text = str(t)

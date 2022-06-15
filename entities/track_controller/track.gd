@@ -61,10 +61,11 @@ func _process(delta):
 	time = $Player.get_playback_position() + AudioServer.get_time_since_last_mix()
 	# Compensate for output latency.
 	time -= AudioServer.get_output_latency()
-	time -= latency_mod
+	
 	
 	current_beat = time/secs_per_beat
-	
+	time -= latency_mod
+
 	if current_beat > next_beat:
 		next_beat = int(current_beat) + 4
 		_spawn_dummy()
@@ -80,7 +81,7 @@ func _process(delta):
 		var midi_key = int(notes[note_index].midi)
 		var midi_index = midi.find(midi_key)
 		var new_note
-		if notes[note_index].duration > 0.5:
+		if notes[note_index].duration > 0.7:
 			new_note = long_note.instance()
 			new_note.speed_per_unit = unit_per_measure
 			
