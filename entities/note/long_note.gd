@@ -61,13 +61,13 @@ func _process(delta):
 	position = position.linear_interpolate(dummy_position, delta * 5)
 	if go_gray:
 		modulate = modulate.linear_interpolate(Color(1,1,1,0.2), delta * 20)
-	if position.distance_to(Vector2.ZERO) < 4 && !hit:
+	if position.distance_to(Vector2.ZERO) < 8 && !hit:
 		go_gray = true
 		Player.note_accuracy.append(0.0)
 		
 	if end_position.distance_to(Vector2.ZERO) < 32:
 		modulate.a = lerp(modulate.a, 0.0, delta * 10)
-		if modulate.a < 0.05 or end_position.distance_to(Vector2.ZERO) < 4:
+		if modulate.a < 0.05 or end_position.distance_to(Vector2.ZERO) < 8:
 			Player.remove_combo()
 			queue_free()
 	if hit:
