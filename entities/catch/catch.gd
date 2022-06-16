@@ -48,7 +48,9 @@ func _process_note(note):
 	if just_pressed && note.hit == false:
 		var text = ""
 		note.hit = true
-		var accuracy = 1- abs(note.calculate_accuracy())
+		var cali_accuracy = note.calculate_accuracy()
+		Player.note_time_accuracy.append(cali_accuracy)
+		var accuracy = 1- abs(cali_accuracy)
 		print(accuracy)
 		if note.is_in_group("long_notes") and !note.hit_state:
 			connect("unactive", note, "key_released")
