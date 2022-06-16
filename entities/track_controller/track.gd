@@ -18,17 +18,16 @@ var secs_per_beat = 0
 var beat_tick = 0.0
 var next_beat = 0
 var spawn = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
-var file_path = "res://tracks/heaven.json"
+var file_path = "res://tracks/track3.json"
 var unit_per_measure = 0.0
 var node_ref = [null,null]
 var reference = false
 signal quarter_note
 var spec_index = 0
 var spec_time = 0
-
-
 var time_delay
 var time_begin
+
 func _ready():
 	var track_json = load_json()
 	notes = track_json.tracks[1].notes
@@ -135,7 +134,3 @@ func load_json():
 	var data = parse_json(file.get_as_text())
 	var file_data = data
 	return file_data
-
-
-
-
