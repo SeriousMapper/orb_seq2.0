@@ -23,7 +23,7 @@ func _ready():
 	add_to_group("notes")
 	dist = position.distance_to(desired_position)
 	spawn_position = position
-	desired_position = gravity * 16
+	desired_position = gravity * 32
 	
 	dist_to_target = position.distance_to(desired_position)
 	speed = dist_to_target/2
@@ -37,7 +37,7 @@ func _ready():
 #	queue_free()
 func calculate_accuracy() -> float:
 	var acc = 0.0
-	acc = (beat-audio_controller.current_beat) * audio_controller.secs_per_beat
+	acc = (beat-audio_controller.current_beat)
 	return acc
 func _process(delta):
 	var t = (beat-audio_controller.current_beat)/beats_advance

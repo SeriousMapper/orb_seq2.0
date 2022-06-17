@@ -1,8 +1,9 @@
 extends Control
-
+signal button_selected(select)
+signal button_pressed(pressed)
 const MAX_SWIPE_SPEED = 0.4
 const MIN_SWIPE_SPEED = 0.1
-var radius = 250
+var radius = 300
 var origin = Vector2(rect_size.x, rect_size.y/2)
 var rotation = 270
 var start_rotation = 180
@@ -16,7 +17,7 @@ var button_info = [
 	"Calibrate your system to reduce latency when playing songs.",
 	"View the leaderboards throughout the world and see where you belong!"
 ]
-var draw_ahead = 18
+var draw_ahead = 15
 var center_button = 5
 var selected_button = center_button
 var current_index = 0
@@ -27,26 +28,35 @@ var cont = true
 var swipe_speed = MAX_SWIPE_SPEED
 onready var tween = get_node("Tween")
 
-onready var info_title = get_node("Info/vbox/name")
-onready var info = get_node("Info/vbox/info")
+
 func _ready() -> void:
+	draw_ahead = buttons.size() * 2
 	draw_buttons()
 	print(button_positions)
-	matrix = MatrixText.new("Hello", info)
 	print((current_index + button_nodes.size()-1) % button_nodes.size())
 	button_nodes[center_button].grab_focus()
+	swipe_speed = 0.0
+	_rotate_buttons(0)
 
 func _process(delta) -> void:
 	if cont:
 		swipe_speed = lerp(swipe_speed, MAX_SWIPE_SPEED, delta)
 		if Input.is_action_pressed("ui_up"):
 			_rotate_buttons(1)
+			SFX.play_sound_ui(SFX.button_select)
 			
 		if Input.is_action_pressed("ui_down"):
 			_rotate_buttons(-1)
+			SFX.play_sound_ui(SFX.button_select)
+		if Input.is_action_just_pressed("ui_accept"):
+			btn_pressed()
+			SFX.play_sound_ui(SFX.button_press)
+			set_process(false)
 	else:
 		swipe_speed = lerp(swipe_speed, MIN_SWIPE_SPEED, delta)
-	print(swipe_speed)
+func btn_pressed():
+	var btn_pressed = buttons[(selected_button) % buttons.size()]
+	emit_signal("button_pressed", btn_pressed)
 func draw_buttons():
 	create_buttons(1)
 	_load_buttons()
@@ -58,7 +68,7 @@ func _rotate_buttons(by:int):
 		var button = button_nodes[i]
 		button.visible = true
 		var next_button = button_positions[(i + current_index + by) % button_nodes.size()]
-		tween.interpolate_property(button, "rect_position", button.rect_position, next_button, swipe_speed,Tween.TRANS_CUBIC,Tween.EASE_IN_OUT)
+		tween.interpolate_property(button, "rect_position", button.rect_position, next_button, swipe_speed,Tween.TRANS_LINEAR)
 		if button.rect_position.distance_to(next_button) > 500:
 			button.visible = false
 	tween.start()
@@ -68,17 +78,16 @@ func _rotate_buttons(by:int):
 	current_index += by
 	selected_button = (center_button - current_index) % button_nodes.size()
 	button_nodes[(selected_button+by) % button_nodes.size()].grab_focus()
-	info_title.text = buttons[(selected_button+1) % buttons.size()]
-	matrix.queue_free()
-	matrix = MatrixText.new(button_info[(selected_button+1) % buttons.size()], info)
+	emit_signal("button_selected", buttons[(selected_button) % buttons.size()])
 	_load_buttons()
 	yield(get_tree(),"idle_frame")
 	cont = true
 	button_nodes[(selected_button) % button_nodes.size()].grab_focus()
 	
 func _load_buttons():
+	var selected_btn = selected_button
 	for i in button_nodes.size():
-		button_nodes[i].text = buttons[(i-selected_button - current_index) % buttons.size()]
+		button_nodes[i].text = buttons[(i-selected_button - current_index-1) % buttons.size()]
 		
 func create_buttons(rev):
 	rotation = start_rotation

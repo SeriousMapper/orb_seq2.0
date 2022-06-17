@@ -1,0 +1,476 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://assets/font/ThaleahFat.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/png/constellations-2609647__340.jpg" type="Texture" id=3]
+[ext_resource path="res://assets/font/Aquarius-RegularMono.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/font/MatchupPro.otf" type="DynamicFontData" id=5]
+[ext_resource path="res://menus/debriefing/graph.gd" type="Script" id=6]
+[ext_resource path="res://menus/debriefing/info.gd" type="Script" id=7]
+[ext_resource path="res://menus/debriefing/matrix.gd" type="Script" id=8]
+[ext_resource path="res://menus/debriefing/debriefing.gd" type="Script" id=9]
+[ext_resource path="res://assets/sfx/crowd_cheer.wav" type="AudioStream" id=10]
+[ext_resource path="res://menus/debriefing/acc_graph.gd" type="Script" id=11]
+
+[sub_resource type="DynamicFont" id=4]
+size = 11
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 0.184314 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="DynamicFont" id=5]
+size = 6
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 36
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 14
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 12
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 5 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+content_margin_left = 2.0
+content_margin_right = 2.0
+bg_color = Color( 0, 0, 0, 0.0705882 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Shader" id=17]
+code = "shader_type canvas_item;
+
+uniform vec4 bg_color: hint_color;
+uniform float prob: hint_range(0.2,0.9);
+uniform float st_mod = 0.000001;
+float rand(vec2 st) {
+    return fract(sin(dot(vec2(st.x,st.y), vec2(12.9898 ,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	float size = 100.0;
+	vec2 pos = floor(1.0 / size * FRAGCOORD.xy);
+	float color = 0.0;
+	float starValue = rand(pos);
+
+	if (rand(SCREEN_UV.xy / 10.0) > 0.996)
+	{
+		float r = rand(SCREEN_UV.xy) * 2.0;
+		color = r * (0.85 * sin(TIME * (r * 0.4) + 100.0 * r) + 0.2);
+	}
+	COLOR = vec4(vec3(color),1.0) + bg_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=18]
+shader = SubResource( 17 )
+shader_param/bg_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
+shader_param/prob = 0.496
+shader_param/st_mod = 0.15
+
+[node name="Debriefing" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -168.0
+margin_top = -128.0
+margin_right = 168.0
+margin_bottom = 128.0
+theme = ExtResource( 1 )
+script = ExtResource( 9 )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -167.5
+margin_top = -127.0
+margin_right = 167.5
+margin_bottom = 127.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 328.0
+margin_bottom = 247.0
+
+[node name="info" type="PanelContainer" parent="PanelContainer/HBoxContainer"]
+margin_right = 124.0
+margin_bottom = 240.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+script = ExtResource( 7 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/info"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 117.0
+margin_bottom = 233.0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+size_flags_stretch_ratio = 1.55
+alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/HBoxContainer/info/VBoxContainer"]
+margin_right = 110.0
+margin_bottom = 123.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.83
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/info/VBoxContainer/PanelContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 103.0
+margin_bottom = 116.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="album_cover" type="TextureRect" parent="PanelContainer/HBoxContainer/info/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_right = 96.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 1
+
+[node name="track_title" type="Label" parent="PanelContainer/HBoxContainer/info/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_top = 84.0
+margin_right = 96.0
+margin_bottom = 95.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 4 )
+custom_styles/normal = SubResource( 3 )
+text = "HEAVEN"
+align = 1
+valign = 1
+script = ExtResource( 8 )
+
+[node name="track_artist" type="Label" parent="PanelContainer/HBoxContainer/info/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_top = 99.0
+margin_right = 96.0
+margin_bottom = 109.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 5 )
+custom_styles/normal = SubResource( 3 )
+text = "magician.io"
+align = 1
+valign = 1
+script = ExtResource( 8 )
+
+[node name="PanelContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/info/VBoxContainer"]
+margin_top = 127.0
+margin_right = 110.0
+margin_bottom = 160.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/info/VBoxContainer/PanelContainer"]
+margin_right = 110.0
+margin_bottom = 33.0
+
+[node name="TrackScore" type="Label" parent="PanelContainer/HBoxContainer/info/VBoxContainer/PanelContainer/HBoxContainer"]
+margin_right = 110.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "A+"
+align = 1
+valign = 1
+
+[node name="TrackQuality" type="Label" parent="PanelContainer/HBoxContainer/info/VBoxContainer"]
+margin_top = 164.0
+margin_right = 110.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 2 )
+custom_styles/normal = SubResource( 3 )
+text = "Extraterrestrial!"
+align = 1
+valign = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="PanelContainer/HBoxContainer/info/VBoxContainer"]
+margin_top = 182.0
+margin_right = 110.0
+margin_bottom = 226.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="graph" type="PanelContainer" parent="PanelContainer/HBoxContainer"]
+margin_left = 128.0
+margin_right = 321.0
+margin_bottom = 240.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.55
+script = ExtResource( 6 )
+
+[node name="vbox" type="VBoxContainer" parent="PanelContainer/HBoxContainer/graph"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 186.0
+margin_bottom = 233.0
+
+[node name="acc_graph" type="ColorRect" parent="PanelContainer/HBoxContainer/graph/vbox"]
+margin_right = 179.0
+margin_bottom = 136.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 11 )
+
+[node name="score_card" type="PanelContainer" parent="PanelContainer/HBoxContainer/graph/vbox"]
+margin_top = 140.0
+margin_right = 179.0
+margin_bottom = 226.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.63
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 172.0
+margin_bottom = 79.0
+
+[node name="score" type="VBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer"]
+margin_right = 96.0
+margin_bottom = 72.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="score_table" type="HBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score"]
+margin_right = 96.0
+margin_bottom = 38.0
+
+[node name="name" type="VBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score/score_table"]
+margin_right = 48.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="track_title" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score/score_table/name"]
+margin_right = 48.0
+margin_bottom = 10.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 3 )
+text = "SCORE:"
+align = 1
+valign = 1
+
+[node name="track_title2" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score/score_table/name"]
+margin_top = 14.0
+margin_right = 48.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 3 )
+text = "ACCURACY:"
+align = 1
+valign = 1
+
+[node name="track_title3" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score/score_table/name"]
+margin_top = 28.0
+margin_right = 48.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 3 )
+text = "MAX_COMBO:"
+align = 1
+valign = 1
+
+[node name="value" type="VBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score/score_table"]
+margin_left = 52.0
+margin_right = 96.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="score" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score/score_table/value"]
+margin_right = 44.0
+margin_bottom = 10.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "00000000"
+align = 1
+valign = 1
+
+[node name="accuracy" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score/score_table/value"]
+margin_top = 14.0
+margin_right = 44.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "0.00%"
+align = 1
+valign = 1
+script = ExtResource( 8 )
+
+[node name="max_combo" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/score/score_table/value"]
+margin_top = 28.0
+margin_right = 44.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "000"
+align = 1
+valign = 1
+script = ExtResource( 8 )
+
+[node name="acc" type="VBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer"]
+margin_left = 100.0
+margin_right = 165.0
+margin_bottom = 72.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="acc_table" type="HBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc"]
+margin_right = 65.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+
+[node name="name" type="VBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc/acc_table"]
+margin_right = 30.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="track_title" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc/acc_table/name"]
+margin_right = 30.0
+margin_bottom = 10.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 3 )
+text = "p:"
+align = 1
+valign = 1
+
+[node name="track_title2" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc/acc_table/name"]
+margin_top = 14.0
+margin_right = 30.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 3 )
+text = "g:"
+align = 1
+valign = 1
+
+[node name="track_title3" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc/acc_table/name"]
+margin_top = 28.0
+margin_right = 30.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 3 )
+text = "o:"
+align = 1
+valign = 1
+
+[node name="value" type="VBoxContainer" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc/acc_table"]
+margin_left = 34.0
+margin_right = 65.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="perfect" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc/acc_table/value"]
+margin_right = 31.0
+margin_bottom = 10.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "000"
+align = 1
+valign = 1
+script = ExtResource( 8 )
+
+[node name="good" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc/acc_table/value"]
+margin_top = 14.0
+margin_right = 31.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "000"
+align = 1
+valign = 1
+script = ExtResource( 8 )
+
+[node name="okay" type="Label" parent="PanelContainer/HBoxContainer/graph/vbox/score_card/HBoxContainer/acc/acc_table/value"]
+margin_top = 28.0
+margin_right = 31.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "000"
+align = 1
+valign = 1
+script = ExtResource( 8 )
+
+[node name="Button" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -69.0
+margin_top = -20.0
+text = "_Continue"
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+material = SubResource( 18 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="SFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+autoplay = true

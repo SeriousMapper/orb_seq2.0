@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://tracks/calibration_diddy.wav" type="AudioStream" id=1]
 [ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://assets/png/constellations-2609647__340.jpg" type="Texture" id=5]
 [ext_resource path="res://entities/updatedspectrum/spectrum.tscn" type="PackedScene" id=6]
 [ext_resource path="res://entities/calibration/calibration.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/calibrationscene.gd" type="Script" id=8]
 
 [sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
@@ -101,6 +102,7 @@ shader = SubResource( 12 )
 shader_param/speed = 0.757
 
 [node name="calibrationscene" type="Node2D"]
+script = ExtResource( 8 )
 
 [node name="controller" type="Node2D" parent="."]
 process_priority = 2
@@ -145,7 +147,7 @@ modulate = Color( 0.00392157, 0.996078, 0.996078, 0.615686 )
 
 [node name="track" type="Node2D" parent="controller"]
 script = ExtResource( 3 )
-latency_mod = 0.08
+latency_mod = -0.03
 
 [node name="Player" type="AudioStreamPlayer" parent="controller/track"]
 stream = ExtResource( 1 )
@@ -170,7 +172,13 @@ layer = -1
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
 modulate = Color( 1, 1, 1, 0.141176 )
 material = SubResource( 13 )
-margin_right = 367.0
-margin_bottom = 359.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 texture = ExtResource( 5 )
 expand = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2( 180, 180 )
+current = true
+
+[connection signal="finished" from="controller/track/Player" to="controller/track" method="_on_Player_finished"]

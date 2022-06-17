@@ -8,7 +8,8 @@ var blue = Color("#dbf6fe") * 1.25
 var yellow = Color("#f2f2d5") * 1.25
 var spec_num = 2
 var latency = 0
-
+var secs_per_beat = 0.5
+var track_time = 0.0
 func _ready():
 	pass
 func save(var path : String, var thing_to_save):

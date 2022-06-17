@@ -5,7 +5,12 @@ const dummy_note = preload("res://entities/note/time_measure.tscn")
 
 var beats_shown_in_advance = 6.0
 export var latency_mod = 0.12
-
+var current_track = {"artist":"9Hour", 
+"bpm":107, 
+"json":{6:"res://track_folder/arrithmia/track3.json"}, 
+"mp3_path":"res://track_folder/arrithmia/track3.mp3", 
+"track_name":"Arrithmia"}
+var current_diff = 6
 var notes = []
 var note_index = 0
 var look_ahead = 0.5
@@ -30,16 +35,27 @@ var time_delay
 var time_begin
 
 func _ready():
+	SFX.fade_out_music()
+	yield(get_tree(),"idle_frame")
+	if Player.current_song.keys().size() > 0:
+		current_track = Player.current_song
+		current_diff = Player.current_difficulty
+	print(current_track)
+	file_path = current_track['json'][current_diff]
+	$Player.stream = load(current_track['mp3_path'])
 	var track_json = load_json()
 	notes = track_json.tracks[1].notes
 	bpm = track_json.header.bpm
 	#print(bpm)
 	set_process(false)
 	yield(get_tree().create_timer(3.0),"timeout")
-	HUD.play_song_intro("H E A V E N", "audisigl", str(int(bpm)) + " BPM")
-	yield(get_tree().create_timer(3.0),"timeout")
+	var artist = current_track['artist']
+	var track_title = current_track['track_name']
+	HUD.play_song_intro(track_title, artist, str(int(bpm)) + " BPM")
+	yield(get_tree().create_timer(2.0),"timeout")
 	set_process(true)
 	secs_per_beat = 60.0/bpm
+	Globals.secs_per_beat = secs_per_beat
 	#time_begin = OS.get_ticks_usec()
 	time_delay = AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency()
 	print("Time delay   " + str(time_delay))
@@ -68,6 +84,7 @@ func _process(delta):
 	time -= AudioServer.get_output_latency()
 	
 	time -= latency_mod
+	Globals.track_time = time
 	current_beat = time/secs_per_beat
 	
 
@@ -82,12 +99,12 @@ func _process(delta):
 	var note_time = 0
 	if note_index < notes.size():
 		note_time = notes[note_index].time/secs_per_beat
-	else:
-		emit_signal("song_done")
-		print("SONG IS DONE")
+		
 	if note_time < current_beat + beats_shown_in_advance && note_time > 0:
 		var midi_key = int(notes[note_index].midi)
 		var midi_index = midi.find(midi_key)
+		if midi_index == -1:
+			return
 		var new_note
 		if notes[note_index].duration > 0.7:
 			new_note = long_note.instance()
@@ -136,3 +153,9 @@ func load_json():
 	var data = parse_json(file.get_as_text())
 	var file_data = data
 	return file_data
+
+func _on_Player_finished() -> void:
+	emit_signal("song_done")
+	HUD.song_display.visible =false
+	print("SONG IS DONE")
+	SFX.fade_in_music()

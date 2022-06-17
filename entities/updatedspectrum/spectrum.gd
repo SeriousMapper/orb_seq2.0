@@ -35,7 +35,6 @@ func _process(delta):
 	
 func _on_track_quarter_note():
 	#expand_circle((quarter_speed / spec_id) + 0.1)
-	print("in on track quarter note")
 	if (spec_id == 0):
 		expand_circle(quarter_speed)
 	elif (spec_id == 1):
