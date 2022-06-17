@@ -22,6 +22,7 @@ func dir_contents(path):
 		print("An error occurred when trying to access the path.")
 	Globals.save("res://user_data/tracks_import.save", tracks)
 	Globals.load_from_file()
+	SceneChanger.change_scene("res://scenes/MainMenu.tscn")
 func read_folder(path):
 	var dir = Directory.new()
 	var track_dict = {"json": {}, "mp3_path": "", "artist": "", "bpm": 0, "track_name": ""}

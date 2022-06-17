@@ -15,7 +15,6 @@ func _process(delta):
 	
 	player.position = player.position.linear_interpolate(input * 32, delta * 15)
 	get_catch(input)
-	rotation = sin(time) * 0.01
 	
 
 func get_input():
@@ -31,12 +30,11 @@ func get_input():
 func spawn_catch():
 	for i in input_pos:
 		var catch = load("res://entities/catch/catch.tscn").instance()
-		$hit_boxes.add_child(catch)
+		
 		catch.input = i
 		catch.position = i*32
+		$hit_boxes.add_child(catch)
 		catches.append(catch)
-		if i.x != 0:
-			catch.rotation_degrees = 90
 		
 	
 

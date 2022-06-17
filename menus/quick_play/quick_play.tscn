@@ -1,0 +1,286 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://menus/radial_menu/RadialMenu.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/font/ThaleahFat.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/shaders/cool_circle.gdshader" type="Shader" id=3]
+[ext_resource path="res://assets/svg/iconmonstr-circle-thin.svg" type="Texture" id=4]
+[ext_resource path="res://theme.tres" type="Theme" id=5]
+[ext_resource path="res://assets/font/Aquarius-RegularMono.otf" type="DynamicFontData" id=6]
+[ext_resource path="res://menus/quick_play/quick_play.gd" type="Script" id=7]
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform float float_time = 1.0;
+uniform float float_strength = 0.5;
+
+void vertex() {
+	VERTEX += vec2(0, sin(TIME*float_time) * float_strength);
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=20]
+shader = SubResource( 2 )
+shader_param/float_time = 1.0
+shader_param/float_strength = 0.5
+
+[sub_resource type="DynamicFont" id=21]
+size = 37
+outline_size = 1
+outline_color = Color( 0.270588, 0.262745, 0.411765, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = ExtResource( 3 )
+shader_param/amt = 0.873
+shader_param/outline = 0.931
+shader_param/edge_softness = 0.0
+shader_param/color = Color( 1, 0.14902, 0.14902, 1 )
+shader_param/stroke_color = Color( 0.360784, 0.345098, 0.352941, 1 )
+
+[sub_resource type="DynamicFont" id=17]
+size = 21
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=13]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.172549, 0.105882, 0.105882, 1 )
+border_width_left = 1
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_detail = 17
+shadow_size = 2
+shadow_offset = Vector2( 0, 1 )
+
+[sub_resource type="DynamicFont" id=18]
+size = 8
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=19]
+size = 5
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 6 )
+
+[sub_resource type="Shader" id=10]
+code = "shader_type canvas_item;
+
+uniform vec4 bg_color: hint_color;
+uniform float prob: hint_range(0.2,0.9);
+uniform float st_mod = 0.000001;
+float rand(vec2 st) {
+    return fract(sin(dot(vec2(st.x,st.y), vec2(12.9898 ,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	float size = 100.0;
+	vec2 pos = floor(1.0 / size * FRAGCOORD.xy);
+	float color = 0.0;
+	float starValue = rand(pos);
+
+	if (rand(SCREEN_UV.xy / 10.0) > 0.996)
+	{
+		float r = rand(SCREEN_UV.xy) * 2.0;
+		color = r * (0.85 * sin(TIME * (r * 0.4) + 100.0 * r) + 0.2);
+	}
+	COLOR = vec4(vec3(color),1.0) + bg_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=16]
+shader = SubResource( 10 )
+shader_param/bg_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
+shader_param/prob = 0.496
+shader_param/st_mod = 0.15
+
+[node name="quick_play" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 5 )
+script = ExtResource( 7 )
+
+[node name="Title" type="Label" parent="."]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
+material = SubResource( 20 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -180.0
+margin_top = 19.0
+margin_right = 180.0
+margin_bottom = 66.0
+custom_fonts/font = SubResource( 21 )
+text = "Quick_play"
+align = 1
+valign = 2
+
+[node name="RadialMenu" parent="." instance=ExtResource( 1 )]
+material = null
+margin_left = -180.0
+margin_top = -99.5
+margin_right = 180.0
+margin_bottom = 99.5
+
+[node name="Circle" type="TextureRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0.141176 )
+material = SubResource( 11 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -34.0
+margin_top = -98.0
+margin_right = 198.0
+margin_bottom = 132.0
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 5
+
+[node name="track" type="PanelContainer" parent="Circle"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -61.0
+margin_top = -47.5
+margin_right = 61.0
+margin_bottom = 47.5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Circle/track"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 115.0
+margin_bottom = 88.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Circle/track/VBoxContainer"]
+margin_right = 108.0
+margin_bottom = 24.0
+
+[node name="track_score" type="Label" parent="Circle/track/VBoxContainer/HBoxContainer"]
+margin_right = 27.0
+margin_bottom = 24.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_fonts/font = SubResource( 17 )
+custom_styles/normal = SubResource( 13 )
+text = "A+"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Circle/track/VBoxContainer/HBoxContainer"]
+margin_left = 31.0
+margin_right = 108.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="track_title" type="Label" parent="Circle/track/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 77.0
+margin_bottom = 12.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_fonts/font = SubResource( 18 )
+custom_styles/normal = SubResource( 13 )
+text = "Career"
+align = 1
+
+[node name="artist" type="Label" parent="Circle/track/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 16.0
+margin_right = 77.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 19 )
+text = "margician.io"
+align = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Circle/track/VBoxContainer"]
+margin_top = 28.0
+margin_right = 108.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="hbox" type="HBoxContainer" parent="Circle/track/VBoxContainer/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 101.0
+margin_bottom = 46.0
+
+[node name="title" type="VBoxContainer" parent="Circle/track/VBoxContainer/PanelContainer/hbox"]
+margin_right = 45.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/title"]
+margin_right = 45.0
+margin_bottom = 13.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 19 )
+text = "Difficulty:"
+
+[node name="Label2" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/title"]
+margin_top = 13.0
+margin_right = 45.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 19 )
+text = "Hi_Score:"
+
+[node name="Label3" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/title"]
+margin_top = 26.0
+margin_right = 45.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 19 )
+text = "Max_combo:"
+
+[node name="value" type="VBoxContainer" parent="Circle/track/VBoxContainer/PanelContainer/hbox"]
+margin_left = 49.0
+margin_right = 94.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="difficulty" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/value"]
+margin_right = 45.0
+margin_bottom = 13.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 19 )
+text = "0000000000"
+
+[node name="hi_score" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/value"]
+margin_top = 13.0
+margin_right = 45.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 19 )
+text = "0000000000"
+
+[node name="max_combo" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/value"]
+margin_top = 26.0
+margin_right = 45.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 19 )
+text = "0000000000"
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+material = SubResource( 16 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )

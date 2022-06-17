@@ -1,8 +1,10 @@
 extends CanvasLayer
 
 const floaty_text = preload("res://entities/hud/FloatyText.tscn")
+onready var song_display = get_node("song_display")
 func _ready():
-	pass 
+	song_display.visible = false 
+	$song_intro.visible = false
 
 func spawn_floaty_text(position, text):
 	var _floaty = floaty_text.instance()
@@ -11,4 +13,6 @@ func spawn_floaty_text(position, text):
 	$hud_display.add_child(_floaty)
 	
 func play_song_intro(artist, title, bpm):
+	song_display.visible = true
+	$song_intro.visible = true
 	$song_intro.play_text(artist, title, bpm)

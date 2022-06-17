@@ -69,12 +69,14 @@ func _process(delta):
 	if end_position.distance_to(Vector2.ZERO) < 32:
 		modulate.a = lerp(modulate.a, 0.0, delta * 10)
 		if modulate.a < 0.05 or end_position.distance_to(Vector2.ZERO) < 8:
-			Player.remove_combo()
+			if !hit_state:
+				Player.remove_combo()
 			queue_free()
 	if hit:
 		if !hit_state:
 			$area.queue_free()
 			hit_state = true
+			
 		time += delta
 		if time > tick:
 			Player.combo += 1

@@ -17,7 +17,10 @@ onready var circle = get_node("Circle")
 onready var circ2 = get_node("Circle2")
 onready var tween = get_node("Tween")
 func _ready():
-	pass 
+	print(input)
+	$detector.cast_to = input * 96
+	$detector.position = input * -32
+	$Particles2D.gravity = input * 100
 
 func _process(delta):
 	$Particles2D.emitting = long_active && active
@@ -34,9 +37,10 @@ func _process(delta):
 		scale_mod = Vector2(0.5,0.5)
 		
 	if just_pressed:
-		var collision = $Good.get_overlapping_areas()
-		if collision.size() > 0:
-			var note = collision[0].get_parent()
+		var collision = $detector.get_collider()
+		print(collision)
+		if $detector.is_colliding() and collision is Area2D:
+			var note = collision.get_parent()
 			if note.is_in_group("notes"):
 				_process_note(note)
 	just_pressed = false
@@ -70,7 +74,7 @@ func _process_note(note):
 
 		if text != "":
 			Player.add_combo()
-			HUD.spawn_floaty_text(global_position, text)
+			HUD.spawn_floaty_text(position, text)
 			circle.modulate = Color(1.2,1.2,1.2,1.0)
 		else:
 			accuracy = 0.0
