@@ -1,7 +1,7 @@
 extends Node2D
 
 
-
+signal note_removed(x) #bool if hit or not
 var unit_per_measure= 0.0
 var start_pos = 0.0
 var end_pos = 0.0
@@ -29,6 +29,7 @@ var accuracy = 0.0
 var hit_state = false
 var beat_duration = 0.0
 var beat_mod = 0.0
+var boss_note = false
 func _ready() -> void:
 	add_to_group("long_notes")
 	add_to_group("notes")
@@ -100,6 +101,9 @@ func _quadratic_bezier(p0: Vector2, p1: Vector2, p2: Vector2, t: float):
 	var q1 = p1.linear_interpolate(p2, t)
 	var r = q0.linear_interpolate(q1, t)
 	return r
+func _remove_note():
+	emit_signal("note_removed", self)
+	queue_free()
 
 
 

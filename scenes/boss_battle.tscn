@@ -1,0 +1,321 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://tracks/Heaven.mp3" type="AudioStream" id=1]
+[ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
+[ext_resource path="res://entities/track_controller/track.gd" type="Script" id=3]
+[ext_resource path="res://assets/environments/game.tres" type="Environment" id=4]
+[ext_resource path="res://assets/png/constellations-2609647__340.jpg" type="Texture" id=5]
+[ext_resource path="res://entities/updatedspectrum/spectrum.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/boss_battle.gd" type="Script" id=7]
+[ext_resource path="res://assets/svg/circle.svg" type="Texture" id=8]
+[ext_resource path="res://entities/enemy/enemy.gd" type="Script" id=9]
+[ext_resource path="res://theme.tres" type="Theme" id=10]
+[ext_resource path="res://entities/alert_arrow/alert_arrow.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/arrows.gd" type="Script" id=12]
+
+[sub_resource type="Shader" id=15]
+code = "shader_type canvas_item;
+
+
+uniform float amt : hint_range(0.0, 1.0);
+uniform float outline:hint_range(0.5, 1.0);
+uniform float edge_softness = 0.0;
+uniform vec4 color : hint_color;
+uniform vec4 stroke_color:hint_color;
+
+
+void fragment() 
+{
+	vec4 color_tex = texture(TEXTURE, UV);
+	float radius = amt * 0.5;
+	float outline_radius = radius * outline;
+	float d = distance(UV, vec2(0.5));
+	float circle = smoothstep(d - edge_softness, d, radius - edge_softness);
+	float circ2 = smoothstep(d - edge_softness, d, outline_radius - edge_softness);
+	vec4 fill_color = vec4(color.rgb, circle);
+	vec4 out_color =  vec4(stroke_color.rgb, circle -circ2);
+	COLOR = out_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=16]
+shader = SubResource( 15 )
+shader_param/amt = 1.0
+shader_param/outline = 0.986
+shader_param/edge_softness = 0.003
+shader_param/color = Color( 1, 1, 1, 1 )
+shader_param/stroke_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+
+uniform float float_time = 1.0;
+uniform float float_strength = 0.5;
+
+void vertex() {
+	VERTEX += vec2(0, sin(TIME*float_time) * float_strength);
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/float_time = 1.0
+shader_param/float_strength = 0.119
+
+[sub_resource type="SphereMesh" id=1]
+
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0, 0.503106, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+emission_shape = 1
+emission_sphere_radius = 0.4
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 3.92
+scale = 3.0
+color_ramp = SubResource( 7 )
+
+[sub_resource type="Shader" id=14]
+code = "shader_type canvas_item;
+
+uniform vec4 bg_color: hint_color;
+uniform float prob: hint_range(0.2,0.9);
+uniform float st_mod = 0.000001;
+float rand(vec2 st) {
+    return fract(sin(dot(vec2(st.x,st.y), vec2(12.9898 ,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	float size = 100.0;
+	vec2 pos = floor(1.0 / size * FRAGCOORD.xy);
+	float color = 0.0;
+	float starValue = rand(pos);
+
+	if (rand(SCREEN_UV.xy / 10.0) > 0.996)
+	{
+		float r = rand(SCREEN_UV.xy) * 2.0;
+		color = r * (0.85 * sin(TIME * (r * 0.4) + 100.0 * r) + 0.2);
+	}
+	COLOR = vec4(vec3(color),1.0) + bg_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 14 )
+shader_param/bg_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
+shader_param/prob = 0.496
+shader_param/st_mod = 0.15
+
+[sub_resource type="Shader" id=12]
+code = "shader_type canvas_item;
+uniform float speed = 0.6;
+
+void fragment()
+{
+	vec2 iResolution = 4.0 / SCREEN_PIXEL_SIZE;
+	vec2 uv = FRAGCOORD.xy / iResolution.xy + 0.01*TIME;
+    
+    vec3 col = vec3(0.0);
+    
+    for( int i=0; i<35; i++ )
+    {
+        vec2 off = 0.04*cos( 8.0*uv + 0.07*float(i) + speed*TIME + vec2(0.0,0.0));
+        vec3 tmp = texture( TEXTURE, uv + off ).xyz;
+        col += tmp*tmp*tmp;
+    }
+    
+    col /= 1.0;
+    
+	COLOR = vec4( col, 1.0 );
+}"
+
+[sub_resource type="ShaderMaterial" id=13]
+shader = SubResource( 12 )
+shader_param/speed = 0.757
+
+[node name="boss_battle" type="Node2D"]
+script = ExtResource( 7 )
+
+[node name="controller" type="Node2D" parent="."]
+process_priority = 2
+position = Vector2( 180, 180 )
+script = ExtResource( 2 )
+
+[node name="enemy" type="Node2D" parent="controller"]
+script = ExtResource( 9 )
+orbit_scale = Vector2( 16, 16 )
+
+[node name="orbit" type="Sprite" parent="controller/enemy"]
+self_modulate = Color( 1, 1, 1, 0.254902 )
+material = SubResource( 16 )
+scale = Vector2( 8, 8 )
+texture = ExtResource( 8 )
+
+[node name="ball" type="Sprite" parent="controller/enemy"]
+modulate = Color( 1.6, 1.6, 1.6, 1 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 8 )
+
+[node name="spectrum" parent="controller" instance=ExtResource( 6 )]
+modulate = Color( 1, 1, 1, 0.231373 )
+
+[node name="spectrum2" parent="controller" instance=ExtResource( 6 )]
+modulate = Color( 1, 1, 1, 0.231373 )
+
+[node name="spectrum3" parent="controller" instance=ExtResource( 6 )]
+modulate = Color( 1, 1, 1, 0.231373 )
+
+[node name="hit_boxes" type="Node2D" parent="controller"]
+
+[node name="player" type="MeshInstance2D" parent="controller"]
+material = SubResource( 5 )
+scale = Vector2( 12, 12 )
+mesh = SubResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="controller/player"]
+amount = 20
+lifetime = 0.5
+local_coords = false
+process_material = SubResource( 8 )
+
+[node name="orbits" type="Node2D" parent="controller"]
+modulate = Color( 0.00392157, 0.996078, 0.996078, 0.615686 )
+
+[node name="track" type="Node2D" parent="controller"]
+script = ExtResource( 3 )
+latency_mod = -0.03
+
+[node name="Player" type="AudioStreamPlayer" parent="controller/track"]
+stream = ExtResource( 1 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 4 )
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+material = SubResource( 11 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Intro" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+modulate = Color( 1, 1, 1, 0.141176 )
+material = SubResource( 13 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 180, 180 )
+current = true
+
+[node name="Boss_UI" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="ui" type="Control" parent="Boss_UI"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -105.0
+margin_top = -169.0
+margin_right = 105.0
+margin_bottom = 169.0
+theme = ExtResource( 10 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Boss_UI/ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Boss_UI/ui/MarginContainer"]
+margin_right = 210.0
+margin_bottom = 26.0
+size_flags_vertical = 0
+
+[node name="ProgressBar" type="ProgressBar" parent="Boss_UI/ui/MarginContainer/VBoxContainer"]
+margin_right = 210.0
+margin_bottom = 11.0
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.45
+value = 50.0
+
+[node name="Label" type="Label" parent="Boss_UI/ui/MarginContainer/VBoxContainer"]
+margin_top = 15.0
+margin_right = 210.0
+margin_bottom = 26.0
+text = "Boss"
+align = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Boss_UI"]
+layer = 0
+
+[node name="arrows" type="Control" parent="Boss_UI/CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -162.0
+margin_top = -143.0
+margin_right = 160.0
+margin_bottom = 143.0
+script = ExtResource( 12 )
+
+[node name="up_arrow" parent="Boss_UI/CanvasLayer/arrows" instance=ExtResource( 11 )]
+modulate = Color( 4, 2.44, 2.44, 1 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -11.0
+margin_top = -140.0
+margin_right = 16.0
+margin_bottom = -113.0
+stretch_mode = 6
+
+[node name="right_arrow" parent="Boss_UI/CanvasLayer/arrows" instance=ExtResource( 11 )]
+modulate = Color( 4, 2.44, 2.44, 1 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 149.0
+margin_top = -12.0
+margin_right = 176.0
+margin_bottom = 15.0
+rect_rotation = 90.0
+stretch_mode = 6
+
+[node name="down_arrow" parent="Boss_UI/CanvasLayer/arrows" instance=ExtResource( 11 )]
+modulate = Color( 4, 2.44, 2.44, 1 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 13.0
+margin_top = 132.0
+margin_right = 40.0
+margin_bottom = 159.0
+rect_rotation = 180.0
+stretch_mode = 6
+
+[node name="left_arrow" parent="Boss_UI/CanvasLayer/arrows" instance=ExtResource( 11 )]
+modulate = Color( 4, 2.44, 2.44, 1 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -147.0
+margin_top = 12.0
+margin_right = -120.0
+margin_bottom = 39.0
+rect_rotation = -90.0
+stretch_mode = 6
+
+[connection signal="song_done" from="controller/track" to="." method="_on_track_song_done"]
+[connection signal="finished" from="controller/track/Player" to="controller/track" method="_on_Player_finished"]

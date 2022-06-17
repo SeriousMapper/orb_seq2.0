@@ -1,5 +1,6 @@
 extends Node2D
 class_name Note
+signal note_removed(x) #bool if hit or not
 var gravity = Vector2.ZERO
 var spawn_position = Vector2.ZERO
 var desired_position = Vector2.ZERO
@@ -16,6 +17,7 @@ var speed
 var bpm_ratio = 0.0
 var hit = false
 var duration = 0.0
+var boss_note = false
 
 onready var tween = $Tween
 
@@ -49,12 +51,15 @@ func _process(delta):
 		if modulate.a < 0.05 or position.distance_to(Vector2.ZERO) < 4:
 			Player.remove_combo()
 			Player.note_accuracy.append(0.0)
-			queue_free()
+			_remove_note()
 	if hit:
-		queue_free()
+		_remove_note()
 
 func _quadratic_bezier(p0: Vector2, p1: Vector2, p2: Vector2, t: float):
 	var q0 = p0.linear_interpolate(p1, t)
 	var q1 = p1.linear_interpolate(p2, t)
 	var r = q0.linear_interpolate(q1, t)
 	return r
+func _remove_note():
+	emit_signal("note_removed", self)
+	queue_free()

@@ -3,9 +3,8 @@
 [resource]
 background_mode = 4
 glow_enabled = true
-glow_intensity = 2.69
-glow_strength = 0.63
-glow_bloom = 0.05
+glow_intensity = 1.34
+glow_strength = 0.84
+glow_bloom = 0.13
 glow_blend_mode = 1
-glow_hdr_threshold = 0.96
-glow_hdr_scale = 2.31
+glow_hdr_scale = 2.57

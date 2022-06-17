@@ -97,6 +97,7 @@ collide_with_areas = true
 modulate = Color( 2, 2, 2, 1 )
 self_modulate = Color( 1, 0.898039, 0, 1 )
 show_behind_parent = true
+emitting = false
 amount = 150
 lifetime = 3.0
 speed_scale = 5.0

@@ -16,6 +16,7 @@ var current_song = {"artist":"9Hour",
 "mp3_path":"res://track_folder/arrithmia/track3.mp3", 
 "track_name":"Arrithmia"}
 var current_difficulty = 6
+var damage = 5
 func clear():
 	note_accuracy = []
 	note_time_accuracy = []

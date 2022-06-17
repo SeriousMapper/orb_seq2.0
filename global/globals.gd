@@ -3,9 +3,9 @@ extends Node
 var tracks_file = "res://user_data/tracks_import.save"
 var tracks = {}
 var blackholes = []
-var green = Color("#dff35a") * 1.25
-var blue = Color("#dbf6fe") * 1.25
-var yellow = Color("#f2f2d5") * 1.25
+var green = Color("#dd0000") * 1.25
+var blue = Color("#00dd00") * 1.25
+var yellow = Color("#0000dd") * 1.25
 var spec_num = 2
 var latency = 0
 var secs_per_beat = 0.5

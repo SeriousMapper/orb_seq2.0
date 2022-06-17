@@ -1,4 +1,7 @@
 extends Node2D
+signal note_hit(x) #bool if note is hit or not
+signal boss_note_warning(pos)
+signal boss_note_pos(pos)
 const note = preload("res://entities/note.tscn")
 const long_note = preload("res://entities/note/long_note.tscn")
 const dummy_note = preload("res://entities/note/time_measure.tscn")
@@ -11,18 +14,20 @@ var current_track = {"artist":"9Hour",
 "mp3_path":"res://track_folder/arrithmia/track3.mp3", 
 "track_name":"Arrithmia"}
 var current_diff = 6
+var boss_battle = false
 var notes = []
 var note_index = 0
 var look_ahead = 0.5
 var time = 0
 var speed = 0.8
-var midi = [36,37,38,39]
+var midi = [36,37,38,39,41,42,43,44]
+var boss_notes = [41,42,43,44]
 var bpm = 1.0
 var current_beat = 1.0
 var secs_per_beat = 0
 var beat_tick = 0.0
 var next_beat = 0
-var spawn = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
+var spawn = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0),Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
 var file_path = "res://tracks/heaven.json"
 var unit_per_measure = 0.0
 var node_ref = [null,null]
@@ -32,7 +37,8 @@ signal song_done
 var spec_index = 0
 var spec_time = 0
 
-
+var boss_pos = []
+var boss_beat = []
 var time_delay
 var time_begin
 func _ready():
@@ -87,7 +93,11 @@ func _process(delta):
 	time -= latency_mod
 	Globals.track_time = time
 	current_beat = time/secs_per_beat
-	
+	if boss_beat.size() > 0:
+		if boss_beat[0] < current_beat:
+			emit_signal("boss_note_pos", boss_pos[0])
+			boss_pos.remove(0)
+			boss_beat.remove(0)
 
 	if current_beat > next_beat:
 		next_beat = int(current_beat) + 4
@@ -114,7 +124,13 @@ func _process(delta):
 			new_note = note.instance()
 		new_note.audio_controller = self
 		new_note.beat = note_time
+		new_note.boss_note = boss_notes.has(midi_key)
+		if new_note.boss_note:
+			boss_note_warning(spawn[midi_index])
+			boss_pos.append(spawn[midi_index])
+			boss_beat.append(note_time + 1.0)
 		new_note.beat_at_spawn = current_beat
+		new_note.connect("note_removed", self, "_note_hit")
 		new_note.duration = notes[note_index].duration/secs_per_beat
 		new_note.beats_advance = beats_shown_in_advance
 		new_note.gravity = spawn[midi_index]
@@ -144,7 +160,12 @@ func _process(delta):
 		if (mod_time % 100 == 0):
 			emit_signal("quarter_note")
 		spec_index += 1
-
+func _show_boss_pos(pos):
+	emit_signal("boss_note_pos", pos)
+func boss_note_warning(pos):
+	emit_signal("boss_note_warning",pos)
+func _note_hit(note):
+	emit_signal("note_hit", note)
 func get_beat():
 	pass
 
