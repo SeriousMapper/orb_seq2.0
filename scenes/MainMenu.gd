@@ -1,6 +1,6 @@
 extends Control
 
-var buttons = ["Quick_Play"]
+var buttons = ["Quick_Play", "Calibration"]
 var button_info = [
 	"Play a favorite song, or pursue the leaderboards!",
 	"From rags to riches, propel yourself to the best amongst the top 100 DJs.",
@@ -30,3 +30,5 @@ func button_pressed(btn):
 	match btn:
 		"Quick_Play":
 			SceneChanger.change_scene("res://menus/quick_play/quick_play.tscn")
+		"Calibration":
+			SceneChanger.change_scene("res://scenes/calibrationscene.tscn")

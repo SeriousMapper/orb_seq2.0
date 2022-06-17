@@ -18,7 +18,7 @@ var button_info = [
 	"View the leaderboards throughout the world and see where you belong!"
 ]
 var draw_ahead = 15
-var center_button = 5
+var center_button = 4
 var selected_button = center_button
 var current_index = 0
 var button_nodes = []

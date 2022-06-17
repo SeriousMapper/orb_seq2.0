@@ -4,7 +4,7 @@ const long_note = preload("res://entities/note/long_note.tscn")
 const dummy_note = preload("res://entities/note/time_measure.tscn")
 
 var beats_shown_in_advance = 6.0
-export var latency_mod = 0.12
+export var latency_mod = 0
 var current_track = {"artist":"9Hour", 
 "bpm":107, 
 "json":{6:"res://track_folder/arrithmia/track3.json"}, 
@@ -35,12 +35,17 @@ var time_delay
 var time_begin
 
 func _ready():
+	if (get_tree().get_current_scene().get_name() == "calibrationscene"):
+		latency_mod = 0
+		print("THIS IS A CALIBRATION SCENE WITH " + str(latency_mod) + "latency")
+	else:
+		latency_mod = Globals.latency
+		print("LATENCY IN TRACK MODE: " + str(latency_mod))
 	SFX.fade_out_music()
 	yield(get_tree(),"idle_frame")
 	if Player.current_song.keys().size() > 0:
 		current_track = Player.current_song
 		current_diff = Player.current_difficulty
-	print(current_track)
 	file_path = current_track['json'][current_diff]
 	$Player.stream = load(current_track['mp3_path'])
 	var track_json = load_json()
@@ -58,7 +63,6 @@ func _ready():
 	Globals.secs_per_beat = secs_per_beat
 	#time_begin = OS.get_ticks_usec()
 	time_delay = AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency()
-	print("Time delay   " + str(time_delay))
 	#print(secs_per_beat/beats_shown_in_advance)
 	#print(bpm, " ", secs_per_beat)
 	$Player.play()

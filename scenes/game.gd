@@ -11,5 +11,4 @@ func _ready() -> void:
 	$controller/track.connect("song_done", self, "song_finished")
 
 func song_finished():
-	
 	SceneChanger.change_scene("res://menus/debriefing/debriefing.tscn")

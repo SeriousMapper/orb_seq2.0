@@ -10,3 +10,9 @@ var current_difficulty = 6
 func _ready() -> void:
 	Player.current_song = current_track
 	Player.current_difficulty = current_difficulty 
+	$controller/track.connect('song_done', self, 'song_finished')
+	
+func song_finished() -> void:
+	SceneChanger.change_scene('res://scenes/MainMenu.tscn')
+
+

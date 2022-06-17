@@ -67,6 +67,7 @@ Globals="*res://global/globals.gd"
 Player="*res://global/player.gd"
 SceneChanger="*res://global/SceneChanger.tscn"
 SFX="*res://global/SFX.tscn"
+Settings="*res://global/settings.gd"
 
 [display]
 

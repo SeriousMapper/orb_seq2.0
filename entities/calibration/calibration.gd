@@ -17,5 +17,6 @@ func calc_avg_accuracy():
 	for acc in Player.note_time_accuracy:
 		avg += acc
 	avg = avg / Player.note_time_accuracy.size()
-	print("avg accuracy   " + str(avg))
-	Globals.latency = avg
+	print("avg accuracy from calibration script: " + str(avg))
+	Globals.set_latency(-avg)
+	#TODO ----- Save latency into a persistant file (?)

@@ -10,13 +10,17 @@ var spec_num = 2
 var latency = 0
 var secs_per_beat = 0.5
 var track_time = 0.0
+
 func _ready():
-	pass
+	yield(Settings, 'settings_loaded')
+	latency = Settings.load_latency('game_settings', 'latency')
+	
 func save(var path : String, var thing_to_save):
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_var(thing_to_save, true)
 	file.close()
+
 func load_from_file():
 	var file = File.new()
 	if file.file_exists(tracks_file):
@@ -24,3 +28,7 @@ func load_from_file():
 		tracks = file.get_var(true)
 		file.close()
 	print(tracks)
+
+func set_latency(value):
+	latency = value
+	Settings.save_latency(value)
