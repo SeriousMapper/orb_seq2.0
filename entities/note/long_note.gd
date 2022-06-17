@@ -51,7 +51,7 @@ func key_released():
 func calculate_accuracy() -> float:
 	var acc = 0.0
 	
-	acc = ((beat+beat_mod)-audio_controller.current_beat) * audio_controller.secs_per_beat
+	acc = ((beat+beat_mod)-audio_controller.current_beat)
 	print("Accuracy: " + str(acc))
 	return acc
 func _process(delta):

@@ -53,7 +53,7 @@ func _process_note(note):
 		var text = ""
 		note.hit = true
 		var cali_accuracy = note.calculate_accuracy()
-		Player.note_time_accuracy.append(cali_accuracy)
+		Player.note_time_accuracy.append(cali_accuracy*Globals.secs_per_beat)
 		var accuracy = 1- abs(cali_accuracy)
 		print(accuracy)
 		if note.is_in_group("long_notes") and !note.hit_state:
@@ -63,13 +63,18 @@ func _process_note(note):
 		if accuracy > 0.9:
 			text = "Perfect!"
 			Player.perfect += 1
+			Player.health += 0.005
+			
+			print(Player.health)
 		elif accuracy > 0.7:
 			Player.good += 1
 			text = "Good!"
+			Player.health += 0.001
 		elif accuracy > 0.3:
 			text = "Okay"
 			Player.okay += 1
-
+			Player.health -= 0.01
+		Player.health = clamp(Player.health, 0.0, 1.0)
 
 
 		if text != "":

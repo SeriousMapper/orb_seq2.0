@@ -104,6 +104,8 @@ func _process(delta):
 	if note_time < current_beat + beats_shown_in_advance && note_time > 0:
 		var midi_key = int(notes[note_index].midi)
 		var midi_index = midi.find(midi_key)
+		if midi_index == -1:
+			return
 		var new_note
 		if notes[note_index].duration > 0.7:
 			new_note = long_note.instance()

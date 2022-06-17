@@ -7,6 +7,7 @@ var perfect = 0
 var good = 0
 var okay = 0
 var score = 250
+var health = 1.0
 var note_accuracy = []
 var note_time_accuracy = []
 var current_song = {"artist":"9Hour", 
@@ -37,6 +38,7 @@ func add_combo():
 func remove_combo():
 	combo = 0
 	combo_multiplier = 1.0
+	Player.health -= 0.05
 func _calculate_accuracy():
 	var sum = 0
 	var avg = 0.0
