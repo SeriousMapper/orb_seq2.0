@@ -1,6 +1,6 @@
 extends Node2D
 
-const max_speed = 4
+const max_speed = 20
 const min_speed = 0.2
 const sprite_size = 16
 var time = 0
@@ -14,7 +14,7 @@ func _ready() -> void:
 	orbit_base = orbit_scale
 	
 func _process(delta: float) -> void:
-	speed = clamp(max_speed * abs(Player.health *-1), min_speed, max_speed)
+	speed = clamp(max_speed * abs(Player.health-1), min_speed, max_speed)
 	orbit_scale  = orbit_scale.linear_interpolate(orbit_base*Player.health, delta)
 	$ball.position = orb_pos
 	$orbit.scale = orbit_scale

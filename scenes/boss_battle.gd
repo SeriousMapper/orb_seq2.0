@@ -1,9 +1,9 @@
 extends Node2D
 var current_track = {"artist":"9Hour", 
 "bpm":107, 
-"json":{6:"res://tracks/boss_test.json"}, 
-"mp3_path":"res://tracks/boss_test.mp3", 
-"track_name":"Boss_test"}
+"json":{6:"res://tracks/innit_boss.json"}, 
+"mp3_path":"res://tracks/innit.mp3", 
+"track_name":"Innit (Boss)"}
 var current_diff = 6
 
 var boss_health = 100
@@ -20,6 +20,8 @@ func note_hit(note):
 		SFX.play_sound_ui(SFX.button_select)
 		boss_health -= Player.damage
 		update_boss_ui()
+		$boss.get_hit()
+		$boss.emit_hit()
 		if boss_health < 0:
 			print("Boss defeated")
 func update_boss_ui():
@@ -29,9 +31,9 @@ func update_boss_ui():
 	boss_text.text = boss_name
 	prog_bar.value = boss_health
 func update_boss_pos(pos):
-	print(pos)
+	$boss.set_pos(pos)
 func boss_warning(pos):
-	$Boss_UI/CanvasLayer/arrows.play_boss_alert(pos)
+	$Boss_UI/arrows.play_boss_alert(pos)
 
 
 func _on_track_song_done() -> void:

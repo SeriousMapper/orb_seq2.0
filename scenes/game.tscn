@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://tracks/Heaven.mp3" type="AudioStream" id=1]
 [ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scenes/game.gd" type="Script" id=7]
 [ext_resource path="res://assets/svg/circle.svg" type="Texture" id=8]
 [ext_resource path="res://entities/enemy/enemy.gd" type="Script" id=9]
+[ext_resource path="res://entities/hyperspace/HyperSpace.gd" type="Script" id=10]
 
 [sub_resource type="Shader" id=15]
 code = "shader_type canvas_item;
@@ -79,35 +80,45 @@ radial_accel = 3.92
 scale = 3.0
 color_ramp = SubResource( 7 )
 
-[sub_resource type="Shader" id=14]
+[sub_resource type="Shader" id=20]
 code = "shader_type canvas_item;
+//Ethan Alexander Shulman 2017
+uniform float hyperbolic:hint_range(-32,32);
+uniform float time_mod:hint_range(0.01,2.0);
+///*with x64 MSAA - 256 chars
+void fragment()
+{
+	vec4 o = COLOR;
+	vec2 p = FRAGCOORD.xy;
+	vec2 iResolution = 1.0 / SCREEN_PIXEL_SIZE;
+    o -= o;
+    for (int s = 0; s < 32; s++) {
+        vec2 R = iResolution.xy,
+        u = (p*hyperbolic-R+vec2(float(s%1),float(s/20))/0.6)/R.x;
+        u = floor((2.-vec2(atan(u.y,u.x)/30.,length(u)))*R)+.1;
 
-uniform vec4 bg_color: hint_color;
-uniform float prob: hint_range(0.2,0.9);
-uniform float st_mod = 0.000001;
-float rand(vec2 st) {
-    return fract(sin(dot(vec2(st.x,st.y), vec2(12.9898 ,78.233))) * 43758.5453123);
+        o += max(.8-fract(vec4(7,6,4,1)*.01+(u.y*.001+u.x*.4)*fract(u.x*.21)+TIME * time_mod * 0.04)*5., 0.)/128.;
+    }
+	vec4 col = texture(TEXTURE, UV);
+	COLOR =   o/col*2.0 * 4.0 ;
 }
+//*/
 
-void fragment() {
-	float size = 100.0;
-	vec2 pos = floor(1.0 / size * FRAGCOORD.xy);
-	float color = 0.0;
-	float starValue = rand(pos);
+/*no MSAA - 193 chars
+void mainImage( out vec4 o, vec2 u )
+{
+    vec2 R = iResolution.xy;
+    u = (u*2.-R)/R.x;
+    u = floor(6.-vec2(atan(u.y,u.x)/3.,length(u))*R)+.5;
+ 	
+    o = 1.-fract(vec4(7,6,4,0)*.02+(u.y*.02+u.x*.4)*fract(u.x*.61)+iTime)*5.;
+}
+*/"
 
-	if (rand(SCREEN_UV.xy / 10.0) > 0.996)
-	{
-		float r = rand(SCREEN_UV.xy) * 2.0;
-		color = r * (0.85 * sin(TIME * (r * 0.4) + 100.0 * r) + 0.2);
-	}
-	COLOR = vec4(vec3(color),1.0) + bg_color;
-}"
-
-[sub_resource type="ShaderMaterial" id=11]
-shader = SubResource( 14 )
-shader_param/bg_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
-shader_param/prob = 0.496
-shader_param/st_mod = 0.15
+[sub_resource type="ShaderMaterial" id=18]
+shader = SubResource( 20 )
+shader_param/hyperbolic = 2.0
+shader_param/time_mod = 2.0
 
 [sub_resource type="Shader" id=12]
 code = "shader_type canvas_item;
@@ -160,7 +171,7 @@ scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 8 )
 
 [node name="spectrum" parent="controller" instance=ExtResource( 6 )]
-modulate = Color( 1, 1, 1, 0.231373 )
+modulate = Color( 1, 1, 1, 0.741176 )
 
 [node name="spectrum2" parent="controller" instance=ExtResource( 6 )]
 modulate = Color( 1, 1, 1, 0.231373 )
@@ -171,6 +182,7 @@ modulate = Color( 1, 1, 1, 0.231373 )
 [node name="hit_boxes" type="Node2D" parent="controller"]
 
 [node name="player" type="MeshInstance2D" parent="controller"]
+modulate = Color( 1.2, 1.2, 1.2, 1 )
 material = SubResource( 5 )
 scale = Vector2( 12, 12 )
 mesh = SubResource( 1 )
@@ -191,17 +203,31 @@ latency_mod = -0.03
 [node name="Player" type="AudioStreamPlayer" parent="controller/track"]
 stream = ExtResource( 1 )
 
+[node name="Sprite" type="Sprite" parent="controller"]
+modulate = Color( 0.0431373, 0.027451, 0.027451, 0.643137 )
+show_behind_parent = true
+scale = Vector2( 2.9375, 2.9375 )
+texture = ExtResource( 8 )
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 4 )
 
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
-material = SubResource( 11 )
+[node name="ColorRect2" type="ColorRect" parent="Background"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
+
+[node name="HyperSpace" type="ColorRect" parent="Background"]
+modulate = Color( 1, 1, 1, 0.121569 )
+material = SubResource( 18 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 10 )
 
 [node name="Intro" type="Node2D" parent="."]
 

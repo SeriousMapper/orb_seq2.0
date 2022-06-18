@@ -1,8 +1,8 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://assets/font/ThaleahFat.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://menus/main_menu/Title.gd" type="Script" id=2]
-[ext_resource path="res://assets/environments/game.tres" type="Environment" id=3]
+[ext_resource path="res://theme2.tres" type="Theme" id=3]
 [ext_resource path="res://assets/shaders/cool_circle.gdshader" type="Shader" id=4]
 [ext_resource path="res://menus/radial_menu/RadialMenu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/svg/iconmonstr-circle-thin.svg" type="Texture" id=7]
@@ -39,7 +39,6 @@ shader_param/color = Color( 1, 0.14902, 0.14902, 1 )
 shader_param/stroke_color = Color( 0.360784, 0.345098, 0.352941, 1 )
 
 [sub_resource type="DynamicFont" id=13]
-size = 11
 font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxFlat" id=14]
@@ -57,7 +56,7 @@ shadow_size = 2
 shadow_offset = Vector2( 0, 1 )
 
 [sub_resource type="DynamicFont" id=15]
-size = 10
+size = 11
 font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxFlat" id=16]
@@ -72,39 +71,10 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 shadow_size = 2
 
-[sub_resource type="Shader" id=19]
-code = "shader_type canvas_item;
-
-uniform vec4 bg_color: hint_color;
-uniform float prob: hint_range(0.2,0.9);
-uniform float st_mod = 0.000001;
-float rand(vec2 st) {
-    return fract(sin(dot(vec2(st.x,st.y), vec2(12.9898 ,78.233))) * 43758.5453123);
-}
-
-void fragment() {
-	float size = 100.0;
-	vec2 pos = floor(1.0 / size * FRAGCOORD.xy);
-	float color = 0.0;
-	float starValue = rand(pos);
-
-	if (rand(SCREEN_UV.xy / 10.0) > 0.996)
-	{
-		float r = rand(SCREEN_UV.xy) * 2.0;
-		color = r * (0.85 * sin(TIME * (r * 0.4) + 100.0 * r) + 0.2);
-	}
-	COLOR = vec4(vec3(color),1.0) + bg_color;
-}"
-
-[sub_resource type="ShaderMaterial" id=11]
-shader = SubResource( 19 )
-shader_param/bg_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
-shader_param/prob = 0.496
-shader_param/st_mod = 0.15
-
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 3 )
 script = ExtResource( 9 )
 
 [node name="Title" type="MarginContainer" parent="."]
@@ -145,20 +115,20 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -61.5
+margin_left = -73.5
 margin_top = -76.5
-margin_right = 60.5
-margin_bottom = 18.5
+margin_right = 75.5
+margin_bottom = 31.5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Circle/info"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 115.0
-margin_bottom = 88.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 143.0
+margin_bottom = 104.0
 
 [node name="menu_title" type="Label" parent="Circle/info/VBoxContainer"]
-margin_right = 108.0
-margin_bottom = 15.0
+margin_right = 137.0
+margin_bottom = 19.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 2
 custom_fonts/font = SubResource( 13 )
@@ -166,9 +136,9 @@ custom_styles/normal = SubResource( 14 )
 text = "Career"
 
 [node name="menu_info" type="Label" parent="Circle/info/VBoxContainer"]
-margin_top = 19.0
-margin_right = 108.0
-margin_bottom = 81.0
+margin_top = 23.0
+margin_right = 137.0
+margin_bottom = 98.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
@@ -178,20 +148,9 @@ custom_styles/normal = SubResource( 16 )
 text = "Career"
 autowrap = true
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource( 3 )
-
-[node name="Background" type="CanvasLayer" parent="."]
-layer = -1
-
-[node name="ColorRect" type="ColorRect" parent="Background"]
-material = SubResource( 11 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-
 [node name="RadialMenu" parent="." instance=ExtResource( 5 )]
 margin_left = -180.0
 margin_top = -99.5
 margin_right = 180.0
 margin_bottom = 99.5
+theme = ExtResource( 3 )

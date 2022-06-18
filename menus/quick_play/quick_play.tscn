@@ -1,11 +1,10 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://menus/radial_menu/RadialMenu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/font/ThaleahFat.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://assets/shaders/cool_circle.gdshader" type="Shader" id=3]
 [ext_resource path="res://assets/svg/iconmonstr-circle-thin.svg" type="Texture" id=4]
-[ext_resource path="res://theme.tres" type="Theme" id=5]
-[ext_resource path="res://assets/font/Aquarius-RegularMono.otf" type="DynamicFontData" id=6]
+[ext_resource path="res://theme2.tres" type="Theme" id=5]
 [ext_resource path="res://menus/quick_play/quick_play.gd" type="Script" id=7]
 
 [sub_resource type="Shader" id=2]
@@ -47,54 +46,43 @@ content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 2.0
 content_margin_bottom = 2.0
-bg_color = Color( 0.172549, 0.105882, 0.105882, 1 )
-border_width_left = 1
+bg_color = Color( 0.0784314, 0.0666667, 0.0666667, 1 )
 border_color = Color( 0, 0, 0, 1 )
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_detail = 17
+shadow_color = Color( 0.0627451, 0.0901961, 0.0862745, 0.054902 )
 shadow_size = 2
-shadow_offset = Vector2( 0, 1 )
 
 [sub_resource type="DynamicFont" id=18]
-size = 8
+size = 12
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=19]
-size = 5
+size = 9
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 6 )
+font_data = ExtResource( 2 )
 
-[sub_resource type="Shader" id=10]
-code = "shader_type canvas_item;
+[sub_resource type="StyleBoxFlat" id=22]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.0862745, 0.0784314, 0.0784314, 1 )
+border_width_top = 1
+border_blend = true
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_size = 1
 
-uniform vec4 bg_color: hint_color;
-uniform float prob: hint_range(0.2,0.9);
-uniform float st_mod = 0.000001;
-float rand(vec2 st) {
-    return fract(sin(dot(vec2(st.x,st.y), vec2(12.9898 ,78.233))) * 43758.5453123);
-}
-
-void fragment() {
-	float size = 100.0;
-	vec2 pos = floor(1.0 / size * FRAGCOORD.xy);
-	float color = 0.0;
-	float starValue = rand(pos);
-
-	if (rand(SCREEN_UV.xy / 10.0) > 0.996)
-	{
-		float r = rand(SCREEN_UV.xy) * 2.0;
-		color = r * (0.85 * sin(TIME * (r * 0.4) + 100.0 * r) + 0.2);
-	}
-	COLOR = vec4(vec3(color),1.0) + bg_color;
-}"
-
-[sub_resource type="ShaderMaterial" id=16]
-shader = SubResource( 10 )
-shader_param/bg_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
-shader_param/prob = 0.496
-shader_param/st_mod = 0.15
+[sub_resource type="StyleBoxFlat" id=23]
+content_margin_left = 1.0
+content_margin_right = 1.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color( 0.133333, 0.117647, 0.117647, 1 )
 
 [node name="quick_play" type="Control"]
 anchor_right = 1.0
@@ -143,24 +131,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -61.0
-margin_top = -47.5
-margin_right = 61.0
-margin_bottom = 47.5
+margin_left = -77.0
+margin_top = -58.0
+margin_right = 74.0
+margin_bottom = 58.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Circle/track"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 115.0
-margin_bottom = 88.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 145.0
+margin_bottom = 112.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Circle/track/VBoxContainer"]
-margin_right = 108.0
-margin_bottom = 24.0
+margin_right = 139.0
+margin_bottom = 28.0
 
 [node name="track_score" type="Label" parent="Circle/track/VBoxContainer/HBoxContainer"]
+margin_top = 2.0
 margin_right = 27.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 2
 custom_fonts/font = SubResource( 17 )
@@ -169,14 +158,14 @@ text = "A+"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Circle/track/VBoxContainer/HBoxContainer"]
 margin_left = 31.0
-margin_right = 108.0
-margin_bottom = 24.0
+margin_right = 139.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="track_title" type="Label" parent="Circle/track/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 77.0
-margin_bottom = 12.0
+margin_right = 108.0
+margin_bottom = 15.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
@@ -187,9 +176,9 @@ text = "Career"
 align = 1
 
 [node name="artist" type="Label" parent="Circle/track/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 16.0
-margin_right = 77.0
-margin_bottom = 24.0
+margin_top = 19.0
+margin_right = 108.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_fonts/font = SubResource( 19 )
@@ -197,90 +186,95 @@ text = "margician.io"
 align = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="Circle/track/VBoxContainer"]
-margin_top = 28.0
-margin_right = 108.0
-margin_bottom = 81.0
+margin_top = 32.0
+margin_right = 139.0
+margin_bottom = 106.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_styles/panel = SubResource( 22 )
 
 [node name="hbox" type="HBoxContainer" parent="Circle/track/VBoxContainer/PanelContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 101.0
-margin_bottom = 46.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 135.0
+margin_bottom = 70.0
 
 [node name="title" type="VBoxContainer" parent="Circle/track/VBoxContainer/PanelContainer/hbox"]
-margin_right = 45.0
-margin_bottom = 39.0
+margin_right = 63.0
+margin_bottom = 33.0
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 0
 custom_constants/separation = 0
 
 [node name="Label" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/title"]
-margin_right = 45.0
-margin_bottom = 13.0
+margin_right = 63.0
+margin_bottom = 11.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_fonts/font = SubResource( 19 )
+custom_styles/normal = SubResource( 23 )
 text = "Difficulty:"
 
 [node name="Label2" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/title"]
-margin_top = 13.0
-margin_right = 45.0
-margin_bottom = 26.0
+margin_top = 11.0
+margin_right = 63.0
+margin_bottom = 22.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_fonts/font = SubResource( 19 )
+custom_styles/normal = SubResource( 23 )
 text = "Hi_Score:"
 
 [node name="Label3" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/title"]
-margin_top = 26.0
-margin_right = 45.0
-margin_bottom = 39.0
+margin_top = 22.0
+margin_right = 63.0
+margin_bottom = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_fonts/font = SubResource( 19 )
+custom_styles/normal = SubResource( 23 )
 text = "Max_combo:"
 
 [node name="value" type="VBoxContainer" parent="Circle/track/VBoxContainer/PanelContainer/hbox"]
-margin_left = 49.0
-margin_right = 94.0
-margin_bottom = 39.0
+margin_left = 67.0
+margin_right = 131.0
+margin_bottom = 33.0
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 2
 custom_constants/separation = 0
 
 [node name="difficulty" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/value"]
-margin_right = 45.0
-margin_bottom = 13.0
+margin_right = 64.0
+margin_bottom = 11.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_fonts/font = SubResource( 19 )
+custom_styles/normal = SubResource( 23 )
 text = "0000000000"
 
 [node name="hi_score" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/value"]
-margin_top = 13.0
-margin_right = 45.0
-margin_bottom = 26.0
+margin_top = 11.0
+margin_right = 64.0
+margin_bottom = 22.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_fonts/font = SubResource( 19 )
+custom_styles/normal = SubResource( 23 )
 text = "0000000000"
 
 [node name="max_combo" type="Label" parent="Circle/track/VBoxContainer/PanelContainer/hbox/value"]
-margin_top = 26.0
-margin_right = 45.0
-margin_bottom = 39.0
+margin_top = 22.0
+margin_right = 64.0
+margin_bottom = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 custom_fonts/font = SubResource( 19 )
+custom_styles/normal = SubResource( 23 )
 text = "0000000000"
 
-[node name="Background" type="CanvasLayer" parent="."]
-layer = -1
-
-[node name="ColorRect" type="ColorRect" parent="Background"]
-material = SubResource( 16 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
+[node name="Button" type="Button" parent="."]
+margin_left = 39.0
+margin_top = 63.0
+margin_right = 85.0
+margin_bottom = 81.0
+text = "helloo"

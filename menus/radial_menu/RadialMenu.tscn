@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://theme.tres" type="Theme" id=1]
 [ext_resource path="res://assets/shaders/cool_circle.gdshader" type="Shader" id=2]
 [ext_resource path="res://menus/radial_menu/RadialMenu.gd" type="Script" id=3]
 
@@ -25,7 +24,6 @@ margin_top = -99.0
 margin_right = 80.0
 margin_bottom = 100.0
 rect_clip_content = true
-theme = ExtResource( 1 )
 script = ExtResource( 3 )
 
 [node name="Circle" type="ColorRect" parent="."]

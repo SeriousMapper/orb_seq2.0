@@ -1,4 +1,5 @@
 extends Node
+signal game_over()
 const MAX_COMBO_MULT = 4.0
 var combo = 0
 var max_combo = 0
@@ -16,7 +17,7 @@ var current_song = {"artist":"9Hour",
 "mp3_path":"res://track_folder/arrithmia/track3.mp3", 
 "track_name":"Arrithmia"}
 var current_difficulty = 6
-var damage = 5
+var damage = 1
 func clear():
 	note_accuracy = []
 	note_time_accuracy = []
@@ -24,6 +25,7 @@ func clear():
 	okay = 0
 	good = 0
 	perfect = 0
+	health = 1.0
 	combo_multiplier = 1.0
 	max_combo = 0
 	combo = 0
@@ -40,6 +42,8 @@ func remove_combo():
 	combo = 0
 	combo_multiplier = 1.0
 	Player.health -= 0.05
+	if Player.health < 0:
+		emit_signal("game_over")
 func _calculate_accuracy():
 	var sum = 0
 	var avg = 0.0

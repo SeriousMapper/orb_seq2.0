@@ -3,13 +3,14 @@ extends Node
 var tracks_file = "res://user_data/tracks_import.save"
 var tracks = {}
 var blackholes = []
-var green = Color("#dd0000") * 1.25
-var blue = Color("#00dd00") * 1.25
-var yellow = Color("#0000dd") * 1.25
+var green = Color("#b7f8d4") * 1.1
+var blue = Color("#c7fa98") * 1.1
+var yellow = Color("#faee6a") * 1.1
 var spec_num = 2
 var latency = 0
 var secs_per_beat = 0.5
 var track_time = 0.0
+var time_mod = 1.0
 func _ready():
 	pass
 func save(var path : String, var thing_to_save):

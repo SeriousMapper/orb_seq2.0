@@ -5,7 +5,7 @@ signal boss_note_pos(pos)
 const note = preload("res://entities/note.tscn")
 const long_note = preload("res://entities/note/long_note.tscn")
 const dummy_note = preload("res://entities/note/time_measure.tscn")
-
+var game_over = false
 var beats_shown_in_advance = 6.0
 export var latency_mod = 0.12
 var current_track = {"artist":"9Hour", 
@@ -36,12 +36,13 @@ signal quarter_note
 signal song_done
 var spec_index = 0
 var spec_time = 0
-
+var time_mod = 1.0
 var boss_pos = []
 var boss_beat = []
 var time_delay
 var time_begin
 func _ready():
+	Player.connect("game_over", self, "game_over")
 	SFX.fade_out_music()
 	yield(get_tree(),"idle_frame")
 	if Player.current_song.keys().size() > 0:
@@ -92,7 +93,7 @@ func _process(delta):
 	
 	time -= latency_mod
 	Globals.track_time = time
-	current_beat = time/secs_per_beat
+	current_beat = time/(secs_per_beat *time_mod)
 	if boss_beat.size() > 0:
 		if boss_beat[0] < current_beat:
 			emit_signal("boss_note_pos", boss_pos[0])
@@ -115,7 +116,7 @@ func _process(delta):
 		var midi_key = int(notes[note_index].midi)
 		var midi_index = midi.find(midi_key)
 		if midi_index == -1:
-			return
+			midi_index = 0
 		var new_note
 		if notes[note_index].duration > 0.7:
 			new_note = long_note.instance()
@@ -128,7 +129,7 @@ func _process(delta):
 		if new_note.boss_note:
 			boss_note_warning(spawn[midi_index])
 			boss_pos.append(spawn[midi_index])
-			boss_beat.append(note_time + 1.0)
+			boss_beat.append(note_time - 2.0)
 		new_note.beat_at_spawn = current_beat
 		new_note.connect("note_removed", self, "_note_hit")
 		new_note.duration = notes[note_index].duration/secs_per_beat
@@ -186,3 +187,33 @@ func _on_Player_finished() -> void:
 	HUD.song_display.visible =false
 	print("SONG IS DONE")
 	SFX.fade_in_music()
+func game_over():
+	if Player.health < 0 and !game_over:
+		game_over = true
+		var tween = Tween.new()
+		add_child(tween)
+		#tween.interpolate_property(self, "time_mod", 1.0, 1.2, 4.0,Tween.TRANS_LINEAR)
+		tween.interpolate_property($Player, "pitch_scale", 1.0, 0.1, 3.0,Tween.TRANS_LINEAR)
+		tween.start()
+		var game_over_screen = load("res://scenes/GameOver.tscn").instance()
+		HUD.add_child(game_over_screen)
+		game_over_screen.connect("pressed", self, "game_over_pressed")
+		
+		yield(tween,"tween_completed")
+		
+		
+		set_process(false)
+func game_over_pressed(x):
+	match x:
+		"retry":
+			Player.clear()
+			$Player.play()
+			$Player.pitch_scale = 1.0
+			time_mod = 1.0
+			set_process(true)
+			game_over = false
+			for node in get_tree().get_nodes_in_group("notes"):
+				node.queue_free()
+			note_index = 0
+		"quit":
+			pass

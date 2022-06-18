@@ -80,6 +80,10 @@ window/stretch/aspect="keep_height"
 
 window=false
 
+[gui]
+
+theme/custom="res://theme2.tres"
+
 [importer_defaults]
 
 mp3={

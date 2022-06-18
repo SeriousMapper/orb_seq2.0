@@ -20,7 +20,7 @@ func _ready():
 	print(input)
 	$detector.cast_to = input * 96
 	$detector.position = input * -32
-	$Particles2D.gravity = input * 100
+	$Particles2D.gravity = input * 64
 
 func _process(delta):
 	$Particles2D.emitting = long_active && active

@@ -1,19 +1,20 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://global/HUD.gd" type="Script" id=1]
 [ext_resource path="res://theme.tres" type="Theme" id=2]
 [ext_resource path="res://global/song_display.gd" type="Script" id=3]
 [ext_resource path="res://assets/shaders/pixel.gdshader" type="Shader" id=4]
 [ext_resource path="res://entities/hud/component/song_intro.gd" type="Script" id=5]
+[ext_resource path="res://theme2.tres" type="Theme" id=6]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 4 )
 shader_param/pixel_size = 2
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=4]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("MarginContainer:rect_position")
+tracks/0/path = NodePath(".:rect_position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -22,10 +23,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 109.5, 152.5 ) ]
+"values": [ Vector2( 0, 0 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("MarginContainer:modulate")
+tracks/1/path = NodePath(".:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -34,74 +35,26 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("MarginContainer:margin_top")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ -27.5 ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("MarginContainer:anchor_top")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 0.5 ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("MarginContainer:anchor_bottom")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 0.349 ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("MarginContainer:margin_bottom")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ -58.0 ]
+"values": [ Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=2]
 resource_name = "hide"
 tracks/0/type = "value"
-tracks/0/path = NodePath("MarginContainer:rect_position")
-tracks/0/interp = 2
+tracks/0/path = NodePath(".:rect_position")
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [  ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, -50 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("MarginContainer:modulate")
-tracks/1/interp = 2
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
@@ -111,59 +64,23 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
-tracks/2/type = "value"
-tracks/2/path = NodePath("MarginContainer:margin_top")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = false
-tracks/2/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
-"update": 1,
-"values": [  ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("MarginContainer:anchor_top")
-tracks/3/interp = 2
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = false
-tracks/3/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
-"update": 0,
-"values": [  ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("MarginContainer:anchor_bottom")
-tracks/4/interp = 2
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = false
-tracks/4/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
-"update": 0,
-"values": [  ]
-}
 
 [sub_resource type="Animation" id=3]
 resource_name = "show"
 tracks/0/type = "value"
-tracks/0/path = NodePath("MarginContainer:rect_position")
+tracks/0/path = NodePath(".:rect_position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [  ]
+"values": [ Vector2( 0, 50 ), Vector2( 0, 0 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("MarginContainer:modulate")
+tracks/1/path = NodePath(".:modulate")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -173,42 +90,6 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("MarginContainer:anchor_top")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = false
-tracks/2/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
-"update": 0,
-"values": [  ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("MarginContainer:anchor_bottom")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = false
-tracks/3/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
-"update": 0,
-"values": [  ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("MarginContainer:margin_bottom")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = false
-tracks/4/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
-"update": 1,
-"values": [  ]
 }
 
 [node name="HUD" type="CanvasLayer"]
@@ -226,7 +107,7 @@ modulate = Color( 1, 1, 1, 0.670588 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-theme = ExtResource( 2 )
+theme = ExtResource( 6 )
 script = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="song_display"]
@@ -331,36 +212,39 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="song_intro" type="Control" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 2 )
+margin_right = 360.0
+margin_bottom = 360.0
+theme = ExtResource( 6 )
 script = ExtResource( 5 )
 
 [node name="MarginContainer" type="MarginContainer" parent="song_intro"]
 anchor_left = 0.5
-anchor_top = 0.349
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.349
-margin_left = 109.5
-margin_top = -27.5
-margin_right = 218.5
-margin_bottom = -58.0
+anchor_bottom = 0.5
+margin_left = -54.5
+margin_top = -19.5
+margin_right = 54.5
+margin_bottom = 19.5
 
 [node name="PanelContainer" type="PanelContainer" parent="song_intro/MarginContainer"]
 self_modulate = Color( 1, 1, 1, 0.243137 )
 margin_right = 109.0
-margin_bottom = 45.0
+margin_bottom = 41.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="song_intro/MarginContainer/PanelContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 102.0
-margin_bottom = 38.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 103.0
+margin_bottom = 37.0
 custom_constants/separation = -1
 alignment = 1
 
 [node name="song_title" type="Label" parent="song_intro/MarginContainer/PanelContainer/VBoxContainer"]
-margin_right = 95.0
+margin_right = 97.0
 margin_bottom = 11.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_y = 2
@@ -370,7 +254,7 @@ align = 1
 [node name="song_artist" type="Label" parent="song_intro/MarginContainer/PanelContainer/VBoxContainer"]
 modulate = Color( 0.980392, 0.662745, 0.662745, 1 )
 margin_top = 10.0
-margin_right = 95.0
+margin_right = 97.0
 margin_bottom = 21.0
 custom_constants/line_spacing = 0
 text = "Audisigl"
@@ -378,7 +262,7 @@ align = 1
 
 [node name="bpm" type="Label" parent="song_intro/MarginContainer/PanelContainer/VBoxContainer"]
 margin_top = 20.0
-margin_right = 95.0
+margin_right = 97.0
 margin_bottom = 31.0
 text = "154 BPM"
 align = 1
@@ -386,6 +270,6 @@ valign = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="song_intro"]
 playback_speed = 3.0
-anims/RESET = SubResource( 2 )
-anims/hide = SubResource( 4 )
+anims/RESET = SubResource( 4 )
+anims/hide = SubResource( 2 )
 anims/show = SubResource( 3 )

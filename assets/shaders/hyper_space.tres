@@ -1,0 +1,41 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=22]
+code = "shader_type canvas_item;
+//Ethan Alexander Shulman 2017
+uniform float hyperbolic:hint_range(-32,32);
+uniform float time_mod:hint_range(0.01,2.0);
+///*with x64 MSAA - 256 chars
+void fragment()
+{
+	vec4 o = COLOR;
+	vec2 p = FRAGCOORD.xy;
+	vec2 iResolution = 2.0 / SCREEN_PIXEL_SIZE;
+    o -= o;
+    for (int s = 0; s < 32; s++) {
+        vec2 R = iResolution.xy,
+        u = (p*hyperbolic-R+vec2(float(s%1),float(s/20))/0.6)/R.x;
+        u = floor((2.-vec2(atan(u.y,u.x)/30.,length(u)))*R)+.1;
+
+        o += max(.8-fract(vec4(6,6,6,1)*.009+(u.y*.001+u.x*.4)*fract(u.x*.12)+TIME * time_mod * 0.04)*10., 0.)/100.;
+    }
+	vec4 col = texture(TEXTURE, UV);
+	COLOR =   o/col*2.0 * 4.0 ;
+}
+//*/
+
+/*no MSAA - 193 chars
+void mainImage( out vec4 o, vec2 u )
+{
+    vec2 R = iResolution.xy;
+    u = (u*2.-R)/R.x;
+    u = floor(6.-vec2(atan(u.y,u.x)/3.,length(u))*R)+.5;
+ 	
+    o = 1.-fract(vec4(7,6,4,0)*.02+(u.y*.02+u.x*.4)*fract(u.x*.61)+iTime)*5.;
+}
+*/"
+
+[resource]
+shader = SubResource( 22 )
+shader_param/hyperbolic = 4.036
+shader_param/time_mod = 2.0
