@@ -107,8 +107,9 @@ func save_score_data():
 func save_player_data():
 	Globals.save(Globals.player_file, hi_scores)
 func load_player_data():
-	hi_scores = Globals.load_from_file(Globals.player_file)
-	print(hi_scores)
+	var data = Globals.load_from_file(Globals.player_file)
+	if data != null:
+		hi_scores = data
 func get_track_quality() -> Array:
 	var acc = _calculate_accuracy()
 	var letter_grade = ""

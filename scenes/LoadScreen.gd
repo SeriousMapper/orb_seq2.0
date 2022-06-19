@@ -21,7 +21,7 @@ func dir_contents(path):
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
-	Globals.save("res://user_data/tracks_import.save", tracks)
+	#Globals.save("res://user_data/tracks_import.save", tracks)
 	
 	Globals.tracks = Globals.load_from_file("res://user_data/tracks_import.save")
 	Player.load_player_data()
