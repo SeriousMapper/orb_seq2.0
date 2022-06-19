@@ -80,10 +80,7 @@ func _process(delta):
 			
 		time += delta
 		if time > tick:
-			Player.combo += 1
-			
-			Player.score += Player.combo_multiplier * 5
-			Player.combo_multiplier += 0.01
+			Player.add_combo()
 			time = 0
 	position_speed = last_position.distance_to(position)
 	if caught:

@@ -20,6 +20,7 @@ func _ready() -> void:
 	var _track_quality = Player.get_track_quality()
 	track_score.text = _track_quality[0]
 	track_quality.text = _track_quality[1]
+	$VBoxContainer/PanelContainer2/VBoxContainer/album_cover.texture = load(Player.current_song['cover'])
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

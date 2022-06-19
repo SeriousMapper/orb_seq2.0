@@ -9,8 +9,6 @@ var current_diff = 6
 var boss_health = 100
 var boss_name = "Sq_002_45"
 func _ready() -> void:
-	Player.current_song = current_track
-	Player.current_difficulty = 6
 	$controller/track.connect("note_hit", self, "note_hit")
 	$controller/track.connect("boss_note_warning",self, "boss_warning")
 	$controller/track.connect("boss_note_pos", self, "update_boss_pos")
@@ -37,4 +35,11 @@ func boss_warning(pos):
 
 
 func _on_track_song_done() -> void:
+	HUD.hide_combo_box()
+	if boss_health < 0.0:
+		SceneChanger.change_scene("res://menus/debriefing/debriefing.tscn")
+	else:
+		Player.health = -0.01
+		$controller/track.game_over()
+		boss_health = 100
 	print("song is finished")

@@ -54,7 +54,7 @@ func _process_note(note):
 		note.hit = true
 		var cali_accuracy = note.calculate_accuracy()
 		Player.note_time_accuracy.append(cali_accuracy*Globals.secs_per_beat)
-		var accuracy = 1- abs(cali_accuracy)
+		var accuracy = 1- abs(cali_accuracy*Globals.secs_per_beat)
 		print(accuracy)
 		if note.is_in_group("long_notes") and !note.hit_state:
 			connect("unactive", note, "key_released")

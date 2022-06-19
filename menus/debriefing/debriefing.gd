@@ -8,7 +8,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
+	SFX.fade_in_music()
 	$Button.connect("pressed", self, "_continue")
 	$Button.grab_focus()
 

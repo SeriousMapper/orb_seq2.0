@@ -45,3 +45,5 @@ func button_pressed(btn):
 			$RadialMenu.set_process(true)
 		"Settings":
 			SceneChanger.change_scene("res://scenes/Settings.tscn")
+		"Calibration":
+			SceneChanger.change_scene("res://scenes/calibrationscene.tscn")

@@ -11,5 +11,5 @@ func _ready() -> void:
 	$controller/track.connect("song_done", self, "song_finished")
 
 func song_finished():
-	
+	HUD.hide_combo_box()
 	SceneChanger.change_scene("res://menus/debriefing/debriefing.tscn")

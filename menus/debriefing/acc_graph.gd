@@ -21,7 +21,7 @@ func get_points():
 	for i in acc.size():
 		var point = Vector2.ZERO
 		point.x = (float(i+1)/acc.size()) * offset.x
-		point.y = acc[i] * -offset.y + offset.y
+		point.y = (acc[i] * 0.7) * -offset.y + offset.y
 		points.append(point)
 	points.append(rect_size)
 	return points

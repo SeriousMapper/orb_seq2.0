@@ -1,10 +1,16 @@
 extends Node
 signal game_over()
 signal saved()
+signal combo_tick()
+signal bad_tick()
 const MAX_COMBO_MULT = 4.0
+const COMBO_COUNT_TICK = 100
+const BAD_TICK = 10
 var combo = 0
 var max_combo = 0
 var combo_multiplier = 1.0
+var combo_counter = 0
+var bad_counter = 0
 var perfect = 0
 var good = 0
 var okay = 0
@@ -16,7 +22,8 @@ var current_song = {"artist":"9Hour",
 "bpm":107, 
 "json":{6:"res://track_folder/arrithmia/track3.json"}, 
 "mp3_path":"res://track_folder/arrithmia/track3.mp3", 
-"track_name":"Arrithmia"}
+"track_name":"Arrithmia",
+"cover": "res://track_folder/heaven/cover.jpg"}
 var hi_scores = {}
 var current_difficulty = 6
 var damage = 1
@@ -36,20 +43,49 @@ func clear():
 	combo_multiplier = 1.0
 	max_combo = 0
 	combo = 0
+	save_player_data()
+func wipe():
+	note_accuracy = []
+	note_time_accuracy = []
+	score = 0
+	okay = 0
+	good = 0
+	perfect = 0
+	health = 1.0
+	combo_multiplier = 1.0
+	max_combo = 0
+	combo = 0
 func _ready() -> void:
 	pass
 
 func add_combo():
 	combo += 1
+	bad_counter = 0
+	combo_counter += 1
+	HUD.add_tick_to_combo()
+	if combo_counter > COMBO_COUNT_TICK:
+		combo_counter = 0
+		emit_signal("combo_tick")
+		HUD.show_combo_box()
+		SFX.play_random(SFX.good_vox)
 	combo_multiplier += 0.05
+	
 	if combo_multiplier > MAX_COMBO_MULT:
 		combo_multiplier = MAX_COMBO_MULT
 	if combo > max_combo:
 		max_combo = combo
 	score += 5 * combo_multiplier
 func remove_combo():
-
+	bad_counter += 1
+	if HUD.combo_visible:
+		HUD.hide_combo_box()
+	if bad_counter > BAD_TICK:
+		bad_counter = 0
+		
+		SFX.play_random(SFX.bad_vox)
+		emit_signal("bad_tick")
 	combo = 0
+	combo_counter = 0
 	combo_multiplier = 1.0
 	Player.health -= 0.05
 	if Player.health < 0:

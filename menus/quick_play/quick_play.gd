@@ -41,7 +41,10 @@ func button_pressed(btn):
 	
 	var difficulty = tracks[btn]["json"].keys()[0]
 	Player.current_difficulty = difficulty
-	SceneChanger.change_scene("res://scenes/game.tscn")
+	if int(difficulty) != 0:
+		SceneChanger.change_scene("res://scenes/game.tscn")
+	else:
+		SceneChanger.change_scene("res://scenes/boss_battle.tscn")
 func get_difficulty(title):
 	var difficulties = tracks[title]["json"].keys()
 	var string = ""

@@ -17,5 +17,8 @@ func calc_avg_accuracy():
 	for acc in Player.note_time_accuracy:
 		avg += acc
 	avg = avg / Player.note_time_accuracy.size()
-	print("avg accuracy   " + str(avg))
-	Globals.latency = avg
+	print("avg accuracy from calibration script: " + str(avg))
+	Globals.set_latency(-avg)
+	HUD.play_song_intro("Latency:", str(-avg), "")
+	yield(get_tree().create_timer(4),"timeout")
+	SceneChanger.change_scene('res://scenes/MainMenu.tscn')

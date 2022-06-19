@@ -14,7 +14,10 @@ var secs_per_beat = 0.5
 var track_time = 0.0
 var time_mod = 1.0
 func _ready():
-	pass
+	latency = Settings.load_latency('game_settings', 'latency')	
+func set_latency(value):
+	latency = value
+	Settings.save_latency(value)
 func save(var path : String, var thing_to_save):
 	var file = File.new()
 	file.open(path, File.WRITE)

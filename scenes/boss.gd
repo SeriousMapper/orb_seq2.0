@@ -15,7 +15,7 @@ func _ready() -> void:
 	lerp_pos = $Sprite.position 
 func _process(delta: float) -> void:
 	sin_time += delta
-	lerp_rot = lerp(lerp_rot, rot, delta)
+	lerp_rot = lerp(lerp_rot, rot, delta * 0.01)
 	target_pos = Vector2(sin(lerp_rot), cos(lerp_rot)) * 150
 	$Sprite.position = target_pos
 	if hit:

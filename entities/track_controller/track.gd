@@ -42,6 +42,12 @@ var boss_beat = []
 var time_delay
 var time_begin
 func _ready():
+	if (get_tree().get_current_scene().get_name() == "calibrationscene"):
+		latency_mod = 0
+		print("THIS IS A CALIBRATION SCENE WITH " + str(latency_mod) + "latency")
+	else:
+		latency_mod = Globals.latency
+		print("LATENCY IN TRACK MODE: " + str(latency_mod))
 	Player.connect("game_over", self, "game_over")
 	SFX.fade_out_music()
 	yield(get_tree(),"idle_frame")
@@ -186,7 +192,7 @@ func _on_Player_finished() -> void:
 	emit_signal("song_done")
 	HUD.song_display.visible =false
 	print("SONG IS DONE")
-	SFX.fade_in_music()
+	
 func game_over():
 	if Player.health < 0 and !game_over:
 		game_over = true
@@ -211,9 +217,11 @@ func game_over_pressed(x):
 			$Player.pitch_scale = 1.0
 			time_mod = 1.0
 			set_process(true)
+			HUD.song_display.visible = true
 			game_over = false
 			for node in get_tree().get_nodes_in_group("notes"):
 				node.queue_free()
 			note_index = 0
 		"quit":
-			pass
+			Player.wipe()
+			SceneChanger.change_scene("res://scenes/MainMenu.tscn")

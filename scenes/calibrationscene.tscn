@@ -159,6 +159,7 @@ environment = ExtResource( 4 )
 layer = -1
 
 [node name="ColorRect" type="ColorRect" parent="Background"]
+visible = false
 material = SubResource( 11 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -170,7 +171,7 @@ color = Color( 0, 0, 0, 1 )
 layer = -1
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
-modulate = Color( 1, 1, 1, 0.141176 )
+modulate = Color( 1, 1, 1, 0.0588235 )
 material = SubResource( 13 )
 anchor_right = 1.0
 anchor_bottom = 1.0

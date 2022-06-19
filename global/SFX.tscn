@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://global/SFX.gd" type="Script" id=1]
 [ext_resource path="res://assets/sfx/button_select.wav" type="AudioStream" id=2]
 [ext_resource path="res://assets/music/menu_music.mp3" type="AudioStream" id=3]
+[ext_resource path="res://assets/sfx/dr_greer/G - Your third eye open.ogg" type="AudioStream" id=4]
 
 [sub_resource type="Shader" id=19]
 code = "shader_type canvas_item;
@@ -56,3 +57,9 @@ material = SubResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
+
+[node name="Vox" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = 2.0
+pitch_scale = 0.93
+bus = "Vox"

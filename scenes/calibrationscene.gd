@@ -10,3 +10,5 @@ var current_difficulty = 6
 func _ready() -> void:
 	Player.current_song = current_track
 	Player.current_difficulty = current_difficulty 
+
+	

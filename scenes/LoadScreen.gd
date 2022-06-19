@@ -3,6 +3,7 @@ extends Control
 var track_directory = "res://track_folder/"
 var tracks = {}
 func _ready() -> void:
+	yield(get_tree(),"idle_frame")
 	dir_contents(track_directory) 
 	
 func dir_contents(path):
@@ -23,6 +24,8 @@ func dir_contents(path):
 	Globals.save("res://user_data/tracks_import.save", tracks)
 	
 	Globals.tracks = Globals.load_from_file("res://user_data/tracks_import.save")
+	Player.load_player_data()
+	yield(get_tree().create_timer(1),"timeout")
 	SceneChanger.change_scene("res://scenes/MainMenu.tscn")
 func read_folder(path):
 	var dir = Directory.new()

@@ -57,11 +57,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Orb_Sequence"
-run/main_scene="res://scenes/LoadScreen.tscn"
+run/main_scene="res://scenes/Intro.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
+Settings="*res://global/settings.gd"
 HUD="*res://global/HUD.tscn"
 Globals="*res://global/globals.gd"
 Player="*res://global/player.gd"
@@ -110,6 +111,10 @@ texture={
 "size_limit": 0,
 "stream": false,
 "svg/scale": 1.0
+}
+ogg_vorbis={
+"loop": false,
+"loop_offset": 0
 }
 
 [input]
