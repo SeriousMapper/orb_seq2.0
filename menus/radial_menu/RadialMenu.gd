@@ -3,6 +3,7 @@ signal button_selected(select)
 signal button_pressed(pressed)
 const MAX_SWIPE_SPEED = 0.4
 const MIN_SWIPE_SPEED = 0.1
+export var show_tracks = false
 var radius = 300
 var origin = Vector2(rect_size.x, rect_size.y/2)
 var rotation = 270
@@ -17,7 +18,7 @@ var button_info = [
 	"Calibrate your system to reduce latency when playing songs.",
 	"View the leaderboards throughout the world and see where you belong!"
 ]
-var draw_ahead = 15
+var draw_ahead = 12
 var center_button = 5
 var selected_button = center_button
 var current_index = 0
@@ -30,7 +31,9 @@ onready var tween = get_node("Tween")
 
 
 func _ready() -> void:
-	draw_ahead = buttons.size() * 2
+	draw_ahead = buttons.size() *  2
+	center_button = 5
+	selected_button = center_button
 	draw_buttons()
 	print(button_positions)
 	print((current_index + button_nodes.size()-1) % button_nodes.size())
@@ -76,6 +79,7 @@ func _rotate_buttons(by:int):
 	
 	
 	current_index += by
+	current_index = current_index % button_nodes.size()
 	selected_button = (center_button - current_index) % button_nodes.size()
 	button_nodes[(selected_button+by) % button_nodes.size()].grab_focus()
 	emit_signal("button_selected", buttons[(selected_button) % buttons.size()])
@@ -86,14 +90,22 @@ func _rotate_buttons(by:int):
 	
 func _load_buttons():
 	var selected_btn = selected_button
-	for i in button_nodes.size():
-		button_nodes[i].text = buttons[(i-selected_button - current_index-1) % buttons.size()]
-		
+	for i in draw_ahead:
+		if !show_tracks:
+			button_nodes[i].text = buttons[(i) % buttons.size()]
+		else:
+			print(buttons[(i-selected_button - current_index-1) % buttons.size()])
+			button_nodes[i].reload(buttons[(i) % buttons.size()])
 func create_buttons(rev):
 	rotation = start_rotation
 	for i in draw_ahead:
 		rotation += 15 * rev
-		var btn = create_button(str(i) + " orb _sec")
+		var btn = null
+		if show_tracks:
+			btn = create_track_btn()
+		else:
+			
+			btn = create_button(str(i) + " orb _sec")
 		button_nodes.append(btn)
 		button_positions.append(btn.rect_position)
 		add_child(btn)
@@ -104,4 +116,10 @@ func create_button(text):
 	btn.rect_min_size = Vector2(100,-32)
 	btn.rect_position = origin + point
 	btn.text = str(current_index)  + " ORB  SEQ"
+	return btn
+func create_track_btn():
+	var btn = load("res://menus/radial_menu/track_btn.tscn").instance()
+	var point = Vector2(radius * sin(deg2rad(rotation)),radius * cos(deg2rad(rotation)))
+	btn.rect_min_size = Vector2(100,-32)
+	btn.rect_position = origin + point
 	return btn

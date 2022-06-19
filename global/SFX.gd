@@ -1,5 +1,6 @@
 extends Node
-
+const MAX_VOLUME = 0.0
+const MIN_VOLUME = -72
 
 var button_press = "res://assets/sfx/button_press.wav"
 var button_select = "res://assets/sfx/button_select.wav"
@@ -21,3 +22,5 @@ func fade_in_music():
 	$MenuMusic.playing = true
 	$Tween.interpolate_property($MenuMusic,"volume_db", $MenuMusic.volume_db, -6.0, 1.0,Tween.TRANS_LINEAR)
 	$Tween.start()
+
+		

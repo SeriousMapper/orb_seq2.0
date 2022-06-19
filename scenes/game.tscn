@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://tracks/Heaven.mp3" type="AudioStream" id=1]
 [ext_resource path="res://entities/controller/scripts/controller.gd" type="Script" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://scenes/game.gd" type="Script" id=7]
 [ext_resource path="res://assets/svg/circle.svg" type="Texture" id=8]
 [ext_resource path="res://entities/enemy/enemy.gd" type="Script" id=9]
-[ext_resource path="res://entities/hyperspace/HyperSpace.gd" type="Script" id=10]
 
 [sub_resource type="Shader" id=15]
 code = "shader_type canvas_item;
@@ -79,46 +78,6 @@ orbit_velocity_random = 0.0
 radial_accel = 3.92
 scale = 3.0
 color_ramp = SubResource( 7 )
-
-[sub_resource type="Shader" id=20]
-code = "shader_type canvas_item;
-//Ethan Alexander Shulman 2017
-uniform float hyperbolic:hint_range(-32,32);
-uniform float time_mod:hint_range(0.01,2.0);
-///*with x64 MSAA - 256 chars
-void fragment()
-{
-	vec4 o = COLOR;
-	vec2 p = FRAGCOORD.xy;
-	vec2 iResolution = 1.0 / SCREEN_PIXEL_SIZE;
-    o -= o;
-    for (int s = 0; s < 32; s++) {
-        vec2 R = iResolution.xy,
-        u = (p*hyperbolic-R+vec2(float(s%1),float(s/20))/0.6)/R.x;
-        u = floor((2.-vec2(atan(u.y,u.x)/30.,length(u)))*R)+.1;
-
-        o += max(.8-fract(vec4(7,6,4,1)*.01+(u.y*.001+u.x*.4)*fract(u.x*.21)+TIME * time_mod * 0.04)*5., 0.)/128.;
-    }
-	vec4 col = texture(TEXTURE, UV);
-	COLOR =   o/col*2.0 * 4.0 ;
-}
-//*/
-
-/*no MSAA - 193 chars
-void mainImage( out vec4 o, vec2 u )
-{
-    vec2 R = iResolution.xy;
-    u = (u*2.-R)/R.x;
-    u = floor(6.-vec2(atan(u.y,u.x)/3.,length(u))*R)+.5;
- 	
-    o = 1.-fract(vec4(7,6,4,0)*.02+(u.y*.02+u.x*.4)*fract(u.x*.61)+iTime)*5.;
-}
-*/"
-
-[sub_resource type="ShaderMaterial" id=18]
-shader = SubResource( 20 )
-shader_param/hyperbolic = 2.0
-shader_param/time_mod = 2.0
 
 [sub_resource type="Shader" id=12]
 code = "shader_type canvas_item;
@@ -221,14 +180,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
 
-[node name="HyperSpace" type="ColorRect" parent="Background"]
-modulate = Color( 1, 1, 1, 0.121569 )
-material = SubResource( 18 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-script = ExtResource( 10 )
-
 [node name="Intro" type="Node2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -241,6 +192,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 5 )
 expand = true
+stretch_mode = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 180, 180 )

@@ -40,15 +40,15 @@ border_color = Color( 1, 1, 1, 0.313726 )
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
-shadow_color = Color( 0.65098, 0.992157, 1, 0.113725 )
+shadow_color = Color( 0.407843, 0.384314, 0.647059, 0.113725 )
 shadow_size = 4
 
 [sub_resource type="StyleBoxFlat" id=7]
-content_margin_left = 2.0
-content_margin_right = 2.0
+content_margin_left = 6.0
+content_margin_right = 6.0
 content_margin_top = 2.0
 content_margin_bottom = 2.0
-bg_color = Color( 0.054902, 0.0509804, 0.0431373, 1 )
+bg_color = Color( 0.180392, 0.156863, 0.145098, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -61,11 +61,11 @@ shadow_color = Color( 0.65098, 0.992157, 1, 0 )
 shadow_size = 2
 
 [sub_resource type="StyleBoxFlat" id=10]
-content_margin_left = 2.0
-content_margin_right = 2.0
+content_margin_left = 6.0
+content_margin_right = 6.0
 content_margin_top = 4.0
 content_margin_bottom = 2.0
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0.145098, 0.113725, 0.113725, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -82,7 +82,7 @@ content_margin_left = 6.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.14902, 0.137255, 0.168627, 1 )
+bg_color = Color( 0.0862745, 0.0666667, 0.12549, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1

@@ -9,7 +9,7 @@ var text = ""
 var chars_decoded = 0
 var decoded = []
 var decision_time = 0.0
-var decision_update = 0.04
+var decision_update = 1.0
 var time = 1.0
 var chars = 0.0
 var count = 0
@@ -54,6 +54,7 @@ func _process(delta: float) -> void:
 				string += c
 		if true_check:
 			set_process(false)
+			queue_free()
 		lbl.text = string
 
 		

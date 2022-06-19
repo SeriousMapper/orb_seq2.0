@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/font/ThaleahFat.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://theme2.tres" type="Theme" id=2]
+[ext_resource path="res://menus/radial_menu/track_btn.gd" type="Script" id=3]
+[ext_resource path="res://track_folder/pain/IMG_0857.jpg" type="Texture" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 9
+font_data = ExtResource( 1 )
+
+[node name="track_btn" type="Button"]
+margin_right = 106.0
+margin_bottom = 30.0
+theme = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="hbox" type="HBoxContainer" parent="MarginContainer"]
+margin_right = 106.0
+margin_bottom = 30.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/hbox"]
+margin_right = 2.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.08
+
+[node name="cover" type="TextureRect" parent="MarginContainer/hbox"]
+margin_left = 6.0
+margin_right = 31.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.82
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/hbox"]
+margin_left = 35.0
+margin_right = 106.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.28
+custom_constants/separation = 0
+
+[node name="title" type="Label" parent="MarginContainer/hbox/VBoxContainer"]
+margin_right = 71.0
+margin_bottom = 11.0
+size_flags_horizontal = 5
+size_flags_vertical = 7
+text = "Arrithmia"
+align = 1
+valign = 1
+
+[node name="artist" type="Label" parent="MarginContainer/hbox/VBoxContainer"]
+margin_left = 14.0
+margin_top = 11.0
+margin_right = 57.0
+margin_bottom = 20.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 1 )
+text = "magician.io"
+align = 1
+valign = 1
+
+[node name="bpm" type="Label" parent="MarginContainer/hbox/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0.364706 )
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 51.0
+margin_bottom = 29.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 1 )
+text = "107 BPM"
+align = 1
+valign = 1

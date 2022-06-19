@@ -20,3 +20,4 @@ func _on_retry_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	emit_signal("pressed", "quit")
+	SceneChanger.change_scene("res://scenes/MainMenu.tscn")

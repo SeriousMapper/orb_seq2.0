@@ -4,8 +4,8 @@ const floaty_text = preload("res://entities/hud/FloatyText.tscn")
 onready var song_display = get_node("song_display")
 func _ready():
 	song_display.visible = false 
-	$song_intro.visible = false
-
+func hide_display():
+	song_display.visible = false 
 func spawn_floaty_text(position, text):
 	var _floaty = floaty_text.instance()
 	_floaty.global_position = position
@@ -14,5 +14,4 @@ func spawn_floaty_text(position, text):
 	
 func play_song_intro(artist, title, bpm):
 	song_display.visible = true
-	$song_intro.visible = true
 	$song_intro.play_text(artist, title, bpm)

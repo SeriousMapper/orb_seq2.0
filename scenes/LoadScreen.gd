@@ -21,11 +21,12 @@ func dir_contents(path):
 	else:
 		print("An error occurred when trying to access the path.")
 	Globals.save("res://user_data/tracks_import.save", tracks)
-	Globals.load_from_file()
+	
+	Globals.tracks = Globals.load_from_file("res://user_data/tracks_import.save")
 	SceneChanger.change_scene("res://scenes/MainMenu.tscn")
 func read_folder(path):
 	var dir = Directory.new()
-	var track_dict = {"json": {}, "mp3_path": "", "artist": "", "bpm": 0, "track_name": ""}
+	var track_dict = {"cover": "","json": {}, "mp3_path": "", "artist": "", "bpm": 0, "track_name": ""}
 	if dir.open(path) == OK:
 		dir.list_dir_begin(true)
 		var file_name = dir.get_next()
@@ -42,6 +43,9 @@ func read_folder(path):
 					track_dict["track_name"] = _header.name
 				if file_name.ends_with(".mp3"):
 					track_dict["mp3_path"] = path+"/"+file_name
+				if file_name.ends_with(".png") or file_name.ends_with(".jpg"):
+					track_dict["cover"] = path+"/"+file_name
+				
 					
 			file_name = dir.get_next()
 	else:
